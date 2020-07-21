@@ -3,7 +3,8 @@
 <template>
   <div class="login">
     <form v-on:submit.prevent="submit()">
-      <h1>Login</h1>
+      <h1> Sharsheret </h1> <br> <br> <br> <br>
+      <h1>Sign-in</h1>
       <ul>
         <li class="text-danger" v-for="error in errors">{{ error }}</li>
       </ul>
@@ -17,6 +18,10 @@
       </div>
       <input type="submit" class="btn btn-primary" value="Submit">
     </form>
+    <div>
+      <p> not a member? </p> 
+      <router-link to="/signup">Signup</router-link>
+    </div>
   </div>
 </template>
 
