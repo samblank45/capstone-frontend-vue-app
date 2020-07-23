@@ -1,10 +1,10 @@
 <template>
   <div class="users-index">
     <div v-for="user in users" v-bind:key="user.id">
-      <div v-for="image in images" v-bind:key="image.id">
+      <div v-for="image in user.images" v-bind:key="image.id">
         <img v-bind:src="image.url" v-bind:alt="image.url">
       </div>
-      <h3>{{user.first_name}} {{user.last_name}}</h3>
+      <router-link v-bind:to="`/users/${user.id}`">{{user.first_name}} {{user.last_name}}</router-link>
       <h3> {{user.current_location}}</h3>
     </div>
   </div>
