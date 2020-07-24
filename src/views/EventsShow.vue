@@ -1,7 +1,7 @@
 <template>
   <div class="events-show">
     <div v-if="$parent.getUserId() == event.host_id">
-      <router-link to="/events/:id/edit">Edit</router-link>
+      <router-link v-bind:to="`/events/${event.id}/edit`">Edit</router-link>
     </div>
     <h3>{{event.title}}</h3>
     <p>{{event.description}}</p>

@@ -5,19 +5,19 @@
   
       <div class="form-group">
         <label>Event title</label>
-        <input type="body" class="form-control" v-model="event.title">
+        <input type="text" class="form-control" v-model="event.title">
       </div>
       <div class="form-group">
         <label>description:</label>
-        <input type="body" class="form-control" v-model="event.description">
+        <input type="text" class="form-control" v-model="event.description">
       </div>
       <div class="form-group">
         <label> location:</label>
-        <input type="body" class="form-control" v-model="event.location">
+        <input type="text" class="form-control" v-model="event.location">
       </div>
       <div class="form-group">
         <label>time:</label>
-        <input type="body" class="form-control" v-model="event.date_time">
+        <input type="text" class="form-control" v-model="event.date_time">
       </div>
       <input type="submit" class="btn btn-primary" value="update">
       <button v-on:click="destroyEvent()">Delete</button>
@@ -39,7 +39,7 @@ export default {
   created: function() {
     axios.get(`/api/events/${this.$route.params.id}`).then(response => {
       this.event = response.data;
-      console.log(this.user);
+      console.log(this.event);
     });
   },
   methods: {

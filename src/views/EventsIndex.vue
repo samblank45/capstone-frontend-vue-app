@@ -22,7 +22,7 @@ export default {
   },
   created: function() {
     axios.get("/api/events").then(response => {
-      console.log("all usereventss", response.data);
+      console.log("all userevents", response.data);
       this.events = response.data;
     });
   }
