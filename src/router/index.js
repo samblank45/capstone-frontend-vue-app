@@ -7,6 +7,10 @@ import Logout from '../views/Logout.vue';
 import UsersIndex from '../views/UsersIndex.vue';
 import UsersShow from '../views/UsersShow.vue';
 import UsersEdit from '../views/UsersEdit.vue';
+import EventsIndex from '../views/EventsIndex.vue';
+import EventsNew from '../views/EventsNew.vue';
+import EventsShow from '../views/EventsShow.vue';
+import EventsEdit from '../views/EventsEdit.vue';
 
 Vue.use(VueRouter);
 
@@ -45,13 +49,33 @@ const routes = [
     path: '/users/:id/edit',
     name: 'users-edit',
     component: UsersEdit
+  },
+  {
+    path: '/events',
+    name: 'events-index',
+    component: EventsIndex
+  },
+  {
+    path: '/events/new',
+    name: 'events-new',
+    component: EventsNew
+  },
+  {
+    path: '/events/:id',
+    name: 'events-show',
+    component: EventsShow
+  },
+  {
+    path: '/events/:id/edit',
+    name: 'events-edit',
+    component: EventsEdit
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;
