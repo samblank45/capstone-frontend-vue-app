@@ -6,13 +6,14 @@
       <h3><router-link v-bind:to="`/events/${event.id}`">{{event.title}}</router-link></h3>
       <p>{{event.description}}</p>
       <p>{{event.location}}</p>
-      <p>{{event.date_time}}</p>
+      <p>{{relativeDate(event.date_time)}}</p>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import moment from "moment";
 export default {
   data: function() {
     return {
@@ -25,6 +26,11 @@ export default {
       console.log("all userevents", response.data);
       this.events = response.data;
     });
+  },
+  methods: {
+    relativeDate: function(date) {
+      return moment(date).format("MMMM Do YYYY, h:mm a");
+    }
   }
 };
 </script>

@@ -17,7 +17,7 @@
       </div>
       <div class="form-group">
         <label>time:</label>
-        <input type="text" class="form-control" v-model="event.date_time">
+        <input type="datetime-local" class="form-control" v-model="event.date_time">
       </div>
       <input type="submit" class="btn btn-primary" value="update">
       <button v-on:click="destroyEvent()">Delete</button>

@@ -4,13 +4,14 @@
         <div v-for="conversation in conversations">
           <p>{{conversation.partner.first_name}} {{conversation.partner.last_name}}</p>
           <router-link v-bind:to="`/conversations/${conversation.id}`">{{conversation.last_message.text}}</router-link>
-          <p>{{conversation.last_message.created_at}}</p>
+          <p>{{relativeTime(conversation.last_message.created_at)}}</p>
         </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import moment from "moment";
 export default {
   data: function() {
     return {
@@ -22,6 +23,13 @@ export default {
       console.log("all conversations", response.data);
       this.conversations = response.data;
     });
+  },
+  methods: {
+    relativeTime: function(time) {
+      return moment(time)
+        .startOf("hour")
+        .fromNow();
+    }
   }
 };
 </script>

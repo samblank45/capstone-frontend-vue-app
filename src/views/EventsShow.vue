@@ -6,7 +6,7 @@
     <h3>{{event.title}}</h3>
     <p>{{event.description}}</p>
     <p>{{event.location}}</p>
-    <p>{{event.date_time}}</p>
+    <p>{{relativeDate(event.date_time)}}</p>
     <p>attendees</p>
     <div v-for="attendee in event.attendees">
       <p>{{attendee.full_name}}</p>
@@ -17,6 +17,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 export default {
   data: function() {
     return {
@@ -29,6 +30,10 @@ export default {
       console.log(response.data);
     });
   },
-  methods: {}
+  methods: {
+    relativeDate: function(date) {
+      return moment(date).format("MMMM Do YYYY, h:mm a");
+    }
+  }
 };
 </script>

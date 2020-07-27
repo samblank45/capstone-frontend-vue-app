@@ -3,6 +3,7 @@
     <router-link :to="`/users/${partner.id}`">{{conversation.partner.first_name}} {{conversation.partner.last_name}} </router-link>
     <div v-for="message in messages">
       <p>{{message.text}}</p>
+      <p>{{relativeTime(message.created_at)}}</p>
     </div>
     <form v-on:submit.prevent="createMessage()">
       <label>Send Message: </label>
@@ -15,6 +16,8 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
+
 export default {
   data: function() {
     return {
@@ -40,6 +43,11 @@ export default {
       axios.post("/api/messages", params).then(response => {
         this.messages.push(response.data);
       });
+    },
+    relativeTime: function(time) {
+      return moment(time)
+        .startOf("hour")
+        .fromNow();
     }
   }
 };
