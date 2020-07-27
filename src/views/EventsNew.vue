@@ -26,6 +26,10 @@
         <label> date:</label>
         <input type="datetime-local" class="form-control" v-model="dateTime">
       </div>
+      <div class="form-group">
+        <label> image:</label>
+        <input type="datetime-local" class="form-control" v-model="imageUrl">
+      </div>
       <input type="submit" class="btn btn-primary" value="Submit">
     </form>
   </div>
@@ -43,7 +47,8 @@ export default {
       description: "",
       location: "",
       dateTime: "",
-      status: ""
+      status: "",
+      imageUrl: ""
     };
   },
   methods: {
@@ -52,7 +57,8 @@ export default {
         title: this.title,
         description: this.description,
         location: this.location,
-        date_time: this.dateTime
+        date_time: this.dateTime,
+        image_url: this.imageUrl
       };
       axios
         .post("/api/events", params)

@@ -4,6 +4,7 @@
       <router-link v-bind:to="`/events/${event.id}/edit`">Edit</router-link>
     </div>
     <h3>{{event.title}}</h3>
+    <img :src="event.image_url">
     <p>{{event.description}}</p>
     <p>{{event.location}}</p>
     <p>{{relativeDate(event.date_time)}}</p>
@@ -14,6 +15,12 @@
     <!-- <p>{{event.attendees}}</p> -->
   </div>
 </template>
+
+<style scoped>
+img {
+  width: 400px;
+}
+</style>
 
 <script>
 import axios from "axios";

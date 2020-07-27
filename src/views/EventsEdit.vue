@@ -19,6 +19,10 @@
         <label>time:</label>
         <input type="datetime-local" class="form-control" v-model="event.date_time">
       </div>
+      <div class="form-group">
+        <label>image:</label>
+        <input type="text" class="form-control" v-model="event.image_url">
+      </div>
       <input type="submit" class="btn btn-primary" value="update">
       <button v-on:click="destroyEvent()">Delete</button>
     </form>
@@ -48,7 +52,8 @@ export default {
         title: this.event.title,
         description: this.event.description,
         location: this.event.location,
-        date_time: this.event.date_time
+        date_time: this.event.date_time,
+        image_url: this.event.image_url
       };
       axios
         .patch(`/api/events/${this.event.id}`, params)

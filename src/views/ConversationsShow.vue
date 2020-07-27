@@ -21,15 +21,16 @@ import moment from "moment";
 export default {
   data: function() {
     return {
+      errors: [],
       conversation: {},
       partner: {},
-      messages: [],
+      messages: {},
       newMessage: ""
     };
   },
   created: function() {
     axios.get(`/api/conversations/${this.$route.params.id}`).then(response => {
-      console.log("all conversations", response.data);
+      console.log("all messages", response.data);
       this.conversation = response.data;
       this.partner = response.data.partner;
       this.messages = response.data.messages;
@@ -38,11 +39,19 @@ export default {
   methods: {
     createMessage: function() {
       var params = {
-        text: this.newMessage
+        text: this.newMessage,
+        conversation_id: this.conversation.id
       };
-      axios.post("/api/messages", params).then(response => {
-        this.messages.push(response.data);
-      });
+      axios
+        .post("api/messages", params)
+        .then(response => {
+          this.messages.push(response.data);
+          this.newMessage = "";
+        })
+        .catch(error => {
+          this.errors = error.response.data.errors;
+          console.log(error);
+        });
     },
     relativeTime: function(time) {
       return moment(time)
