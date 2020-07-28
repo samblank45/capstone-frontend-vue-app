@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <li v-if="isLoggedIn()">
+        <router-link :to="`/users/${getUserId()}`">My Profile </router-link>
+      </li>
       <li v-if="isLoggedIn()">
          <router-link to="/events">Events</router-link> |
       </li>
@@ -9,7 +11,7 @@
         <router-link to="/signup">Signup</router-link> |
       </li>
       <li v-if="!isLoggedIn()">
-        <router-link to="/login">Login</router-link> |
+        <router-link to="/">Login</router-link> |
       </li>
       <li v-if="isLoggedIn()">
         <router-link to="/logout">Logout</router-link> |

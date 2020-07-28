@@ -12,13 +12,23 @@
     <div v-for="attendee in event.attendees">
       <p>{{attendee.full_name}}</p>
     </div>
+    <p>host: {{event.host}}</p>
+    <img :src="event.host_picture">
     <!-- <p>{{event.attendees}}</p> -->
+    <h1>MAP</h1>
+    <div id='map'></div>
   </div>
 </template>
 
 <style scoped>
 img {
   width: 400px;
+}
+#map {
+  top: 0;
+  bottom: 0;
+  height: 400px;
+  width: 100%;
 }
 </style>
 
@@ -30,6 +40,16 @@ export default {
     return {
       event: {}
     };
+  },
+  mounted: function() {
+    mapboxgl.accessToken =
+      "pk.eyJ1Ijoic2JsYW40NSIsImEiOiJja2NrdWx2OGYxMjVrMnNvMjdjdzA5MG05In0.pULou7hbNXlrVb9H8ZAgvg";
+    var map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
+      center: [34.7818, 32.0853], // starting position [lng, lat]
+      zoom: 12 // starting zoom
+    });
   },
   created: function() {
     axios.get(`/api/events/${this.$route.params.id}`).then(response => {

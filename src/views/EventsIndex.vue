@@ -14,9 +14,16 @@
       <p>{{event.description}}</p>
       <p>{{event.location}}</p>
       <p>{{relativeDate(event.date_time)}}</p>
-      <div v-for="attendee in events.attendees">
+      <p>attendees: {{event.attendees.length}}</p>
+      <div v-for="attendee in event.attendees">
         <p>{{attendee.full_name}}</p>
       </div>
+    </div>
+    <h1>My events</h1>
+    <div v-for="event in events" v-bind:key="event.id">
+      <div v-if="$parent.getUserId() == event.host_id">
+         <h3><router-link v-bind:to="`/events/${event.id}`">{{event.title}}</router-link></h3>
+    </div>
     </div>
   </div>
 </template>
