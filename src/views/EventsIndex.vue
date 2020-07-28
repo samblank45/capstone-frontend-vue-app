@@ -1,8 +1,14 @@
 <template>
   <div class="events-index">
     <h1>Events</h1>
+    <div>
+      search: <input type="text" v-model="titleFilter" list="title">
+    </div>
+    <datalist id="titles">
+      <option v-for="event in events"> {{event.title}} </option>
+    </datalist>
     <router-link to ="/events/new">Create</router-link>
-    <div v-for="event in events" v-bind:key="event.id">
+    <div v-for="event in filterBy(events, titleFilter)" v-bind:key="event.id">
       <h3><router-link v-bind:to="`/events/${event.id}`">{{event.title}}</router-link></h3>
       <img :src="event.image_url">
       <p>{{event.description}}</p>
@@ -24,11 +30,14 @@ img {
 <script>
 import axios from "axios";
 import moment from "moment";
+import Vue2Filters from "vue2-filters";
 export default {
+  mixins: [Vue2Filters.mixin],
   data: function() {
     return {
       users: [],
-      events: {}
+      events: {},
+      titleFilter: ""
     };
   },
   created: function() {

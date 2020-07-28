@@ -1,6 +1,12 @@
 <template>
   <div class="users-index">
-    <div v-for="user in users" v-bind:key="user.id">
+    <div>
+      search: <input type="text" v-model="nameFilter" list="name">
+    </div>
+    <datalist id="names">
+      <option v-for="user in users"> {{user.full_name}} </option>
+    </datalist>
+    <div v-for="user in filterBy(users, nameFilter)" v-bind:key="user.id">
       <img :src="user.image[0].url"> 
       <router-link v-bind:to="`/users/${user.id}`">{{user.first_name}} {{user.last_name}}</router-link>
       <h3> {{user.current_location}}</h3>
@@ -16,10 +22,13 @@ img {
 </style>
 <script>
 import axios from "axios";
+import Vue2Filters from "vue2-filters";
 export default {
+  mixins: [Vue2Filters.mixin],
   data: function() {
     return {
-      users: []
+      users: [],
+      nameFilter: ""
     };
   },
   created: function() {

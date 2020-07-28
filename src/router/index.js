@@ -14,6 +14,7 @@ import EventsEdit from '../views/EventsEdit.vue';
 import ConversationsIndex from '../views/ConversationsIndex.vue';
 import ConversationsShow from '../views/ConversationsShow.vue';
 
+
 Vue.use(VueRouter);
 
 const routes = [
