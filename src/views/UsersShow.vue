@@ -1,14 +1,15 @@
 <template>
   <div class="users-show">
     <img :src="user.images[0].url" alt="">
-    <!-- <dialog id="images-details">
+    <button type="button" data-toggle="modal" data-target="#showUserImages">Images</button>
+    <dialog id="images-details">
       <form method="dialog">
         <div v-for="image in user.images">
           <p>{{image.url}}</p>
         </div>
         <button>close</button>
       </form>
-    </dialog> -->
+    </dialog>
     <p>{{user.first_name}} {{user.last_name}}</p>
     <p>{{user.current_location}}</p>
     <p>{{user.biography}}</p>

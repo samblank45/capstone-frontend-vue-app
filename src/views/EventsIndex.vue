@@ -18,6 +18,17 @@
       <div v-for="attendee in event.attendees">
         <p>{{attendee.full_name}}</p>
       </div>
+
+
+      <div v-if="event.attendees.includes($parent.getUserId())">
+        <button v-on:click="attendEvent(event)">Attend</button>
+      </div>
+      <div v-else>
+        <button v-on:click="removeAttendEvent(event.attendees)">Remove</button>
+      </div>
+
+
+
     </div>
     <h1>My events</h1>
     <div v-for="event in events" v-bind:key="event.id">
@@ -42,6 +53,7 @@ export default {
   mixins: [Vue2Filters.mixin],
   data: function() {
     return {
+      errors: [],
       users: [],
       events: {},
       titleFilter: ""
@@ -56,6 +68,36 @@ export default {
   methods: {
     relativeDate: function(date) {
       return moment(date).format("MMMM Do YYYY, h:mm a");
+    },
+    attendEvent: function(event) {
+      var params = {
+        user_id: localStorage.getItem("user_id"),
+        event_id: event.id
+      };
+      axios
+        .post(`/api/user_events`, params)
+        .then(response => {
+          // this.$router.push(`/events/${this.$route.params.id}`);
+          console.log("user successfully attending event", response.data);
+        })
+        .catch(error => {
+          console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
+        });
+    },
+    removeAttendEvent: function(attendees) {
+      attendees.forEach(function(attendee) {
+        if (attendee.user_id === localStorage.getItem("user_id")) {
+          axios
+            .delete(`/api/user_events/${attendee.id}`)
+            .then(response => {
+              console.log("user.remove", response.data);
+            })
+            .catch(error => {
+              console.log(error.response.data.errors);
+            });
+        }
+      });
     }
   }
 };

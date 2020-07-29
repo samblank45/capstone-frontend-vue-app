@@ -8,6 +8,7 @@
     <p>{{event.description}}</p>
     <p>{{event.location}}</p>
     <p>{{relativeDate(event.date_time)}}</p>
+    <button v-on:click="attendEvent(event)">Attend</button>
     <p>attendees</p>
     <div v-for="attendee in event.attendees">
       <p>{{attendee.full_name}}</p>
@@ -60,6 +61,22 @@ export default {
   methods: {
     relativeDate: function(date) {
       return moment(date).format("MMMM Do YYYY, h:mm a");
+    },
+    attendEvent: function(event) {
+      var params = {
+        user_id: localStorage.getItem("user_id"),
+        event_id: event.id
+      };
+      axios
+        .post(`/api/user_events`, params)
+        .then(response => {
+          // this.$router.push(`/events/${this.$route.params.id}`);
+          console.log("user successfully attending event", response.data);
+        })
+        .catch(error => {
+          console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
+        });
     }
   }
 };

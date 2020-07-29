@@ -1,18 +1,25 @@
 <template>
   <div class="conversations-show">
     <router-link :to="`/users/${partner.id}`">{{conversation.partner.first_name}} {{conversation.partner.last_name}} </router-link>
+    <img :src="conversation.partner_image">
     <div v-for="message in messages">
-      <p>{{message.text}}</p>
-      <p>{{relativeTime(message.created_at)}}</p>
+      <strong>{{message.name}}:</strong>
+        {{message.text}} ...
+        {{relativeTime(message.created_at)}}
     </div>
     <form v-on:submit.prevent="createMessage()">
       <label>Send Message: </label>
-      <input type="text" class="form-control" :placeholder="`Message ${partner.first_name}`" v-model="newMessage">
+      <textarea type="text" class="form-control" :placeholder="`Message ${partner.first_name}`" v-model="newMessage" cols="30" rows="3"></textarea>
       <input type="submit" class="btn btn-primary" value="send">
     </form>
   </div>
 </template>
 
+<style>
+img {
+  width: 200px;
+}
+</style>
 
 <script>
 import axios from "axios";
