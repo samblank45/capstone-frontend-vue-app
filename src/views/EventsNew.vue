@@ -28,7 +28,7 @@
       </div>
       <div class="form-group">
         <label> image:</label>
-        <input type="datetime-local" class="form-control" v-model="imageUrl">
+        <input type="body" class="form-control" v-model="imageUrl">
       </div>
       <input type="submit" class="btn btn-primary" value="Submit">
     </form>

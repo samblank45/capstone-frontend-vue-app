@@ -18,17 +18,12 @@
       <div v-for="attendee in event.attendees">
         <p>{{attendee.full_name}}</p>
       </div>
-
-
-      <div v-if="event.attendees.includes($parent.getUserId())">
-        <button v-on:click="attendEvent(event)">Attend</button>
+      <div v-for="attendee in event.attendees">
+        <div v-if="attendee.user_id == $parent.getUserId()">
+          <button v-on:click="removeAttendEvent(attendee)">Remove</button>
+        </div>
       </div>
-      <div v-else>
-        <button v-on:click="removeAttendEvent(event.attendees)">Remove</button>
-      </div>
-
-
-
+      <button v-on:click="attendEvent(event)">Attend</button>
     </div>
     <h1>My events</h1>
     <div v-for="event in events" v-bind:key="event.id">
@@ -85,19 +80,15 @@ export default {
           this.errors = error.response.data.errors;
         });
     },
-    removeAttendEvent: function(attendees) {
-      attendees.forEach(function(attendee) {
-        if (attendee.user_id === localStorage.getItem("user_id")) {
-          axios
-            .delete(`/api/user_events/${attendee.id}`)
-            .then(response => {
-              console.log("user.remove", response.data);
-            })
-            .catch(error => {
-              console.log(error.response.data.errors);
-            });
-        }
-      });
+    removeAttendEvent: function(attendee) {
+      axios
+        .delete(`/api/user_events/${attendee.id}`)
+        .then(response => {
+          console.log("user removed", response.data);
+        })
+        .catch(error => {
+          console.log(error.response.data.errors);
+        });
     }
   }
 };
