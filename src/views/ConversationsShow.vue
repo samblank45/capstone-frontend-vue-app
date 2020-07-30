@@ -61,9 +61,7 @@ export default {
         });
     },
     relativeTime: function(time) {
-      return moment(time)
-        .startOf("hour")
-        .fromNow();
+      return moment.utc(time).fromNow();
     }
   }
 };

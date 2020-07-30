@@ -13,6 +13,12 @@
     <div v-for="attendee in event.attendees">
       <p>{{attendee.full_name}}</p>
     </div>
+    <div v-for="attendee in event.attendees">
+      <div v-if="attendee.user_id == $parent.getUserId()">
+        <button v-on:click="removeAttendEvent(attendee)">Remove</button>
+      </div>
+    </div>
+    <button v-on:click="attendEvent(event)">Attend</button>
     <p>host: {{event.host}}</p>
     <img :src="event.host_picture">
     <!-- <p>{{event.attendees}}</p> -->
@@ -30,6 +36,10 @@ img {
   bottom: 0;
   height: 400px;
   width: 100%;
+}
+#geocoder-container > div {
+  min-width: 50%;
+  margin-left: 25%;
 }
 </style>
 
@@ -51,6 +61,23 @@ export default {
       center: [34.7818, 32.0853], // starting position [lng, lat]
       zoom: 12 // starting zoom
     });
+
+    var geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      marker: {
+        color: "orange"
+      },
+      mapboxgl: mapboxgl
+    });
+    map.on("load", () => {
+      var popup = new mapboxgl.Popup({ offset: 25 }).setText(this.event.title);
+      var marker = new mapboxgl.Marker()
+        .setLngLat([this.event.longitude, this.event.latitude])
+        .setPopup(popup)
+        .addTo(map); // add the marker to the map
+    });
+
+    map.addControl(geocoder);
   },
   created: function() {
     axios.get(`/api/events/${this.$route.params.id}`).then(response => {
@@ -76,6 +103,16 @@ export default {
         .catch(error => {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
+        });
+    },
+    removeAttendEvent: function(attendee) {
+      axios
+        .delete(`/api/user_events/${attendee.id}`)
+        .then(response => {
+          console.log("user removed", response.data);
+        })
+        .catch(error => {
+          console.log(error.response.data.errors);
         });
     }
   }

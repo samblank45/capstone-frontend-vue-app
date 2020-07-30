@@ -1,14 +1,20 @@
 <template>
   <div class="conversations-index">
     <h1>Messages</h1>
-        <div v-for="conversation in conversations">
-          <img :src="conversation.partner_image">
-          <p>{{conversation.partner.first_name}} {{conversation.partner.last_name}}</p>
-          <router-link v-bind:to="`/conversations/${conversation.id}`">{{conversation.last_message.text}}</router-link>
-          <p>{{relativeTime(conversation.last_message.created_at)}}</p>
-        </div>
+    <div v-for="conversation in conversations">
+      <img :src="conversation.partner_image">
+      <p>{{conversation.partner.first_name}} {{conversation.partner.last_name}}</p>
+      <div v-if="conversation.text && conversation.created_at">
+        <router-link v-bind:to="`/conversations/${conversation.id}`">{{conversation.last_message.text}}</router-link>
+        <p>{{relativeTime(conversation.last_message.created_at)}}</p>
+      </div>
+      <div v-else>
+        <router-link v-bind:to="`/conversations/${conversation.id}`">message</router-link>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <style>
 img {

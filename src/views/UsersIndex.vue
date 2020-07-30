@@ -7,7 +7,7 @@
       <option v-for="user in users"> {{user.full_name}} </option>
     </datalist>
     <div v-for="user in filterBy(users, nameFilter)" v-bind:key="user.id">
-      <img :src="user.image[0].url"> 
+      <img :src="user.image[0].url || imgPlaceHolder"  @error="imgPlaceHolder"/> 
       <router-link v-bind:to="`/users/${user.id}`">{{user.first_name}} {{user.last_name}}</router-link>
       <h3> {{user.current_location}}</h3>
       <br><br><br>
@@ -36,6 +36,12 @@ export default {
       console.log("all users", response.data);
       this.users = response.data;
     });
+  },
+  methods: {
+    imgPlaceHolder: function(image) {
+      image.target.src =
+        "https://media.macphun.com/img/uploads/customer/how-to/579/15531840725c93b5489d84e9.43781620.jpg?q=85&w=1340";
+    }
   }
 };
 </script>

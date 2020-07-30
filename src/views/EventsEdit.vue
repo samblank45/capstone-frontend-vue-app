@@ -23,13 +23,25 @@
         <label>image:</label>
         <input type="text" class="form-control" v-model="event.image_url">
       </div>
+      <div class="form-group">
+        <label>longitude:</label>
+        <input type="text" class="form-control" v-model="event.longitude">
+      </div>
+      <div class="form-group">
+        <label>latitude:</label>
+        <input type="text" class="form-control" v-model="event.latitude">
+      </div>
       <input type="submit" class="btn btn-primary" value="update">
       <button v-on:click="destroyEvent()">Delete</button>
     </form>
   </div>
 </template>
 
-
+<style scoped>
+img {
+  width: 400px;
+}
+</style>
 <script>
 import axios from "axios";
 
@@ -53,7 +65,9 @@ export default {
         description: this.event.description,
         location: this.event.location,
         date_time: this.event.date_time,
-        image_url: this.event.image_url
+        image_url: this.event.image_url,
+        longitude: this.event.longitude,
+        latitude: this.event.latitude
       };
       axios
         .patch(`/api/events/${this.event.id}`, params)
@@ -61,7 +75,7 @@ export default {
           this.$router.push(`/events/${response.data.id}`);
         })
         .catch(error => {
-          this.error = error.response.data.errors;
+          this.errors = error.response.data.errors;
         });
     },
     destroyEvent: function() {
