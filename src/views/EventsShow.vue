@@ -51,36 +51,6 @@ export default {
       attendee: {}
     };
   },
-  // mounted: function() {
-  //   mapboxgl.accessToken =
-  //     "pk.eyJ1Ijoic2JsYW40NSIsImEiOiJja2NrdWx2OGYxMjVrMnNvMjdjdzA5MG05In0.pULou7hbNXlrVb9H8ZAgvg";
-  //   var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-  //   mapboxClient.geocoding
-  //     .forwardGeocode({
-  //       query: this.event.address,
-  //       autocomplete: false,
-  //       limit: 1
-  //     })
-  //     .send()
-  //     .then(function(response) {
-  //       if (
-  //         response &&
-  //         response.body &&
-  //         response.body.features &&
-  //         response.body.features.length
-  //       ) {
-  //         var feature = response.body.features[0];
-
-  //         var map = new mapboxgl.Map({
-  //           container: "map",
-  //           style: "mapbox://styles/mapbox/streets-v11",
-  //           center: feature.center,
-  //           zoom: 10
-  //         });
-  //         new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
-  //       }
-  //     });
-  // },
   created: function() {
     axios.get(`/api/events/${this.$route.params.id}`).then(response => {
       this.event = response.data;
@@ -130,6 +100,8 @@ export default {
           // this.$router.push(`/events/${this.$route.params.id}`);
           console.log("user successfully attending event", response.data);
           this.event.attending = true;
+          this.event.attendees.push(response.data.attendee);
+          console.log(event);
         })
         .catch(error => {
           console.log(error.response.data.errors);
@@ -142,6 +114,13 @@ export default {
         .then(response => {
           console.log("user removed", response.data);
           this.event.attending = false;
+          var index = this.event.attendees.findIndex(
+            user => user.id == this.$parent.getUserId()
+          );
+          this.event.attendees.splice(index, 1);
+
+          console.log(event);
+          console.log(index);
         })
         .catch(error => {
           console.log(error.response.data.errors);

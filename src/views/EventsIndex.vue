@@ -16,8 +16,9 @@
       <p>{{relativeDate(event.date_time)}}</p>
 
       <button v-on:click="showAttendees()">Attendees: {{event.attendees.length}}</button>
+      <p>{{event.attendees[0].full_name}}</p>
 
-      <dialog id="attendees">
+      <dialog id="attendees-info">
         <form method="dialog">
           <p>Attendees</p>
           <div v-for="attendee in event.attendees">
@@ -25,9 +26,10 @@
           </div>
           <button>close</button>
         </form>
-    </dialog>
+      </dialog>
 
     </div>
+    
     <h1>My events</h1>
     <div v-for="event in events" v-bind:key="event.id">
       <div v-if="$parent.getUserId() == event.host_id">
@@ -69,7 +71,7 @@ export default {
       return moment(date).format("MMMM Do YYYY, h:mm a");
     },
     showAttendees: function() {
-      document.querySelector("#attendees").showModal();
+      document.querySelector("#attendees-info").showModal();
     }
   }
 };

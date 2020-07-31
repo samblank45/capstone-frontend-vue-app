@@ -15,6 +15,9 @@
         <p>Pictures</p>
         <div v-for="image in user.images">
           <img :src="image.url">
+          <div v-if="$parent.getUserId() == user.id">
+            <button v-on:click="destroyImage(image)">Delete</button>
+          </div>
         </div>
         <button>close</button>
       </form>
@@ -58,6 +61,7 @@ export default {
       user: {},
       errors: {},
       images: [],
+      image: {},
       url: "",
       user_id: localStorage.getItem("user_id")
     };
@@ -101,6 +105,14 @@ export default {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
         });
+    },
+    destroyImage: function(image) {
+      axios.delete(`/api/images/${image.id}`).then(response => {
+        console.log("image successfully destroyed", response.data);
+        var index = this.images.indexOf(image);
+        console.log(index);
+        this.images.splice(index, 1);
+      });
     }
   }
 };
