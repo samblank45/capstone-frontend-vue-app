@@ -1,6 +1,7 @@
 <template>
   <div class="users-show">
-    <img :src="user.images[0].url"> 
+    <img v-if="user.images[0]" :src="user.images[0].url" /> 
+    <img v-if="!user.images[0]" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/> 
     <button v-on:click="showImages()">Images</button>
     <div v-if="$parent.getUserId() == user.id">
       <form v-on:submit.prevent="submit()">
@@ -34,13 +35,11 @@
       <div v-for="conversation in user.conversations">
         sender_id: {{conversation.sender_id}}
         current_user id: {{$parent.getUserId()}}
-        <div v-if="conversation.sender_id == $parent.getUserId() || conversation.recipient_id == $parent.getUserId()">
-          <router-link :to="`/conversations/${conversation.id}`">current conversation</router-link>
-        </div>
-        <div v-else>
-          <button v-on:click="createConversation(user)">Create Message</button>
-        </div>
       </div>
+    </div>
+    <!-- <router-link :to="`/conversations/${conversation.id}`">current conversation</router-link> -->
+    <div v-if="user.id != $parent.getUserId()">
+      <button v-on:click="createConversation(user)">Create Message</button>
     </div>
   </div>
 </template>
@@ -58,7 +57,7 @@ export default {
     return {
       user: {},
       errors: {},
-      images: {},
+      images: [],
       url: "",
       user_id: localStorage.getItem("user_id")
     };
@@ -77,15 +76,11 @@ export default {
       }
     },
     submit: function() {
-      // var formData = new FormData();
-      // formData.append("user_id", this.user_id);
-      // formData.append("url", this.url);
-      var params = {
-        user_id: this.user_id,
-        url: this.url
-      };
-      axios.post("/api/images", params.path.to_s).then(response => {
+      var formData = new FormData();
+      formData.append("url", this.url);
+      axios.post("/api/images", formData).then(response => {
         this.$refs.fileInput.value = "";
+        this.images.push(response.data);
       });
     },
     showImages: function() {

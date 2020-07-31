@@ -14,22 +14,25 @@
       <p>{{event.description}}</p>
       <p>{{event.location}}</p>
       <p>{{relativeDate(event.date_time)}}</p>
-      <p>attendees: {{event.attendees.length}}</p>
-      <div v-for="attendee in event.attendees">
-        <p>{{attendee.full_name}}</p>
-      </div>
-      <div v-for="attendee in event.attendees">
-        <div v-if="attendee.user_id == $parent.getUserId()">
-          <button v-on:click="removeAttendEvent(attendee)">Remove</button>
-        </div>
-      </div>
-      <button v-on:click="attendEvent(event)">Attend</button>
+
+      <button v-on:click="showAttendees()">Attendees: {{event.attendees.length}}</button>
+
+      <dialog id="attendees">
+        <form method="dialog">
+          <p>Attendees</p>
+          <div v-for="attendee in event.attendees">
+            <router-link :to="`/users/${attendee.user_id}`">{{attendee.full_name}}</router-link>
+          </div>
+          <button>close</button>
+        </form>
+    </dialog>
+
     </div>
     <h1>My events</h1>
     <div v-for="event in events" v-bind:key="event.id">
       <div v-if="$parent.getUserId() == event.host_id">
          <h3><router-link v-bind:to="`/events/${event.id}`">{{event.title}}</router-link></h3>
-    </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +54,7 @@ export default {
       errors: [],
       users: [],
       events: {},
+      attendee: {},
       titleFilter: ""
     };
   },
@@ -64,31 +68,8 @@ export default {
     relativeDate: function(date) {
       return moment(date).format("MMMM Do YYYY, h:mm a");
     },
-    attendEvent: function(event) {
-      var params = {
-        user_id: localStorage.getItem("user_id"),
-        event_id: event.id
-      };
-      axios
-        .post(`/api/user_events`, params)
-        .then(response => {
-          // this.$router.push(`/events/${this.$route.params.id}`);
-          console.log("user successfully attending event", response.data);
-        })
-        .catch(error => {
-          console.log(error.response.data.errors);
-          this.errors = error.response.data.errors;
-        });
-    },
-    removeAttendEvent: function(attendee) {
-      axios
-        .delete(`/api/user_events/${attendee.id}`)
-        .then(response => {
-          console.log("user removed", response.data);
-        })
-        .catch(error => {
-          console.log(error.response.data.errors);
-        });
+    showAttendees: function() {
+      document.querySelector("#attendees").showModal();
     }
   }
 };

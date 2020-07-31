@@ -8,21 +8,20 @@
     <p>{{event.description}}</p>
     <p>{{event.location}}</p>
     <p>{{relativeDate(event.date_time)}}</p>
-    <button v-on:click="attendEvent(event)">Attend</button>
     <p>attendees</p>
     <div v-for="attendee in event.attendees">
       <p>{{attendee.full_name}}</p>
     </div>
-    <div v-for="attendee in event.attendees">
-      <div v-if="attendee.user_id == $parent.getUserId()">
-        <button v-on:click="removeAttendEvent(attendee)">Remove</button>
-      </div>
+    <div v-if="!event.attending && (event.host.id != $parent.getUserId())">
+      <button v-on:click="attendEvent(event)">Attend</button>
     </div>
-    <button v-on:click="attendEvent(event)">Attend</button>
+    <div v-if="event.attending && (event.host.id != $parent.getUserId())">
+      <button v-on:click="removeAttendEvent(event)">Remove</button>
+    </div>
     <p>host: {{event.host}}</p>
     <img :src="event.host_picture">
-    <!-- <p>{{event.attendees}}</p> -->
     <h1>MAP</h1>
+    <p>{{event.address}}</p>
     <div id='map'></div>
   </div>
 </template>
@@ -37,52 +36,83 @@ img {
   height: 400px;
   width: 100%;
 }
-#geocoder-container > div {
-  min-width: 50%;
-  margin-left: 25%;
-}
 </style>
 
 <script>
 import axios from "axios";
 import moment from "moment";
+/*global mapboxgl */
+/*global MapboxGeocoder */
+/*global mapboxSdk */
 export default {
   data: function() {
     return {
-      event: {}
+      event: {},
+      attendee: {}
     };
   },
-  mounted: function() {
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoic2JsYW40NSIsImEiOiJja2NrdWx2OGYxMjVrMnNvMjdjdzA5MG05In0.pULou7hbNXlrVb9H8ZAgvg";
-    var map = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-      center: [34.7818, 32.0853], // starting position [lng, lat]
-      zoom: 12 // starting zoom
-    });
+  // mounted: function() {
+  //   mapboxgl.accessToken =
+  //     "pk.eyJ1Ijoic2JsYW40NSIsImEiOiJja2NrdWx2OGYxMjVrMnNvMjdjdzA5MG05In0.pULou7hbNXlrVb9H8ZAgvg";
+  //   var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+  //   mapboxClient.geocoding
+  //     .forwardGeocode({
+  //       query: this.event.address,
+  //       autocomplete: false,
+  //       limit: 1
+  //     })
+  //     .send()
+  //     .then(function(response) {
+  //       if (
+  //         response &&
+  //         response.body &&
+  //         response.body.features &&
+  //         response.body.features.length
+  //       ) {
+  //         var feature = response.body.features[0];
 
-    var geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      marker: {
-        color: "orange"
-      },
-      mapboxgl: mapboxgl
-    });
-    map.on("load", () => {
-      var popup = new mapboxgl.Popup({ offset: 25 }).setText(this.event.title);
-      var marker = new mapboxgl.Marker()
-        .setLngLat([this.event.longitude, this.event.latitude])
-        .setPopup(popup)
-        .addTo(map); // add the marker to the map
-    });
-
-    map.addControl(geocoder);
-  },
+  //         var map = new mapboxgl.Map({
+  //           container: "map",
+  //           style: "mapbox://styles/mapbox/streets-v11",
+  //           center: feature.center,
+  //           zoom: 10
+  //         });
+  //         new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+  //       }
+  //     });
+  // },
   created: function() {
     axios.get(`/api/events/${this.$route.params.id}`).then(response => {
       this.event = response.data;
       console.log(response.data);
+      mapboxgl.accessToken =
+        "pk.eyJ1Ijoic2JsYW40NSIsImEiOiJja2NrdWx2OGYxMjVrMnNvMjdjdzA5MG05In0.pULou7hbNXlrVb9H8ZAgvg";
+      var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+      mapboxClient.geocoding
+        .forwardGeocode({
+          query: this.event.address,
+          autocomplete: false,
+          limit: 1
+        })
+        .send()
+        .then(function(response) {
+          if (
+            response &&
+            response.body &&
+            response.body.features &&
+            response.body.features.length
+          ) {
+            var feature = response.body.features[0];
+
+            var map = new mapboxgl.Map({
+              container: "map",
+              style: "mapbox://styles/mapbox/streets-v11",
+              center: feature.center,
+              zoom: 10
+            });
+            new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+          }
+        });
     });
   },
   methods: {
@@ -99,17 +129,19 @@ export default {
         .then(response => {
           // this.$router.push(`/events/${this.$route.params.id}`);
           console.log("user successfully attending event", response.data);
+          this.event.attending = true;
         })
         .catch(error => {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
         });
     },
-    removeAttendEvent: function(attendee) {
+    removeAttendEvent: function(event) {
       axios
-        .delete(`/api/user_events/${attendee.id}`)
+        .delete(`/api/user_events/${event.id}`)
         .then(response => {
           console.log("user removed", response.data);
+          this.event.attending = false;
         })
         .catch(error => {
           console.log(error.response.data.errors);

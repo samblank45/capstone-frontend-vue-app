@@ -30,6 +30,10 @@
         <label> image:</label>
         <input type="body" class="form-control" v-model="imageUrl">
       </div>
+      <div class="form-group">
+        <label> address:</label>
+        <input type="body" class="form-control" v-model="address">
+      </div>
       <input type="submit" class="btn btn-primary" value="Submit">
     </form>
   </div>
@@ -48,7 +52,8 @@ export default {
       location: "",
       dateTime: "",
       status: "",
-      imageUrl: ""
+      imageUrl: "",
+      address: ""
     };
   },
   methods: {
@@ -58,7 +63,8 @@ export default {
         description: this.description,
         location: this.location,
         date_time: this.dateTime,
-        image_url: this.imageUrl
+        image_url: this.imageUrl,
+        address: this.address
       };
       axios
         .post("/api/events", params)
