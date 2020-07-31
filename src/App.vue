@@ -23,7 +23,7 @@
         <router-link to="/conversations">Messages</router-link> |
         </li>
     </div>
-    <router-view/>
+    <router-view :key="$route.fullPath"> </router-view>
   </div>
 </template>
 

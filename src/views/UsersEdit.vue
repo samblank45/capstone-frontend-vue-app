@@ -36,8 +36,8 @@
         <input type="body" class="form-control" v-model="user.email">
       </div>
       <input type="submit" class="btn btn-primary" value="update">
-      <button v-on:click="destroyUser()">Delete</button>
     </form>
+    <button v-on:click="destroyUser()">Delete Profile</button>
   </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
         });
     },
     destroyUser: function() {
-      if (confirm("are you sure you want to delete this")) {
+      if (confirm("are you sure you want to delete your profile?")) {
         axios.delete(`/api/users/${this.user.id}`).then(response => {
           console.log("successfully destroyed user", response.data);
           this.$router.push("/");

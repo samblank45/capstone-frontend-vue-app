@@ -115,7 +115,7 @@ export default {
           console.log("user removed", response.data);
           this.event.attending = false;
           var index = this.event.attendees.findIndex(
-            user => user.id == this.$parent.getUserId()
+            user => user.user_id == this.$parent.getUserId()
           );
           this.event.attendees.splice(index, 1);
 

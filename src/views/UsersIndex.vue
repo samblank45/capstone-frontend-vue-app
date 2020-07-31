@@ -7,8 +7,8 @@
       <option v-for="user in users"> {{user.full_name}} </option>
     </datalist>
     <div v-for="user in filterBy(users, nameFilter)" v-bind:key="user.id">
-      <img v-if="user.image[0]" :src="user.image[0].url"  @error="imgPlaceHolder"/> 
-      <img v-if="!user.image[0]" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/> 
+      <img v-if="user.image.main_image" :src="user.image[0].url"  @error="imgPlaceHolder"/> 
+      <img v-if="!user.main_image" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/> 
       <router-link v-bind:to="`/users/${user.id}`">{{user.first_name}} {{user.last_name}}</router-link>
       <h3> {{user.current_location}}</h3>
       <br><br><br>

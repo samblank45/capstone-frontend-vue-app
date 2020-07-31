@@ -18,6 +18,9 @@
           <div v-if="$parent.getUserId() == user.id">
             <button v-on:click="destroyImage(image)">Delete</button>
           </div>
+          <div v-if="$parent.getUserId() == user.id">
+            <button v-on:click="makeProfilePic(image)"> Make Profile Pic</button>
+          </div>
         </div>
         <button>close</button>
       </form>
@@ -29,22 +32,23 @@
     <p>{{user.hobbies}}</p>
     <p>{{user.country_origin}}</p>
     <p>{{user.aliyah_date}}</p>
-    <div v-if="$parent.getUserId() == user.id">
+    <div v-if=" ($parent.getUserId() == user.id)">
       <router-link :to="`/users/${user.id}/edit`">Edit </router-link>
     </div>
     <div v-for="error in errors"> {{error}} </div>
 
-    <div v-if="$parent.getUserId() != user.id">
+    <div v-if="user.paired && (user.id != $parent.getUserId())">
+      <button v-on:click="createConversation(user)">Send Message</button>
+    </div>
+    <div v-if="!user.paired && (user.id != $parent.getUserId())">
       <div v-for="conversation in user.conversations">
-        sender_id: {{conversation.sender_id}}
-        current_user id: {{$parent.getUserId()}}
+        <div v-if="conversation.sender_id == $parent.getUserId() || conversation.recipient_id == $parent.getUserId()">
+          <router-link :to="`/conversations/${conversation.id}`">current conversation</router-link>
+        </div>
       </div>
     </div>
-    <!-- <router-link :to="`/conversations/${conversation.id}`">current conversation</router-link> -->
-    <div v-if="user.id != $parent.getUserId()">
-      <button v-on:click="createConversation(user)">Create Message</button>
-    </div>
   </div>
+  
 </template>
 
 <style scoped>
@@ -112,6 +116,15 @@ export default {
         var index = this.images.indexOf(image);
         console.log(index);
         this.images.splice(index, 1);
+      });
+    },
+    makeProfilePic: function(image) {
+      var params = {
+        main_image: image.url
+      };
+      axios.patch(`/api/images/${image.id}`, params).then(response => {
+        console.log("image successfully update to main pic", response.data);
+        this.images.push(response.data);
       });
     }
   }
