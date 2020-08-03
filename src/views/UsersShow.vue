@@ -1,5 +1,6 @@
 <template>
   <div class="users-show">
+    <h3>{{user.first_name}} {{user.last_name}}</h3>
     <img v-if="user.images[0]" :src="user.images[0].url" /> 
     <img v-if="!user.images[0]" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/> 
     
@@ -41,6 +42,7 @@
     <div v-if="!user.paired && (user.id != $parent.getUserId())">
       <button v-on:click="createConversation(user)">Send Message</button>
     </div>
+    
     <div v-if="!user.paired && (user.id != $parent.getUserId())">
       <div v-for="conversation in user.conversations">
         <div v-if="conversation.sender_id == $parent.getUserId() || conversation.recipient_id == $parent.getUserId()">

@@ -1,7 +1,8 @@
 <template>
   <div class="conversations-show">
     <router-link :to="`/users/${partner.id}`">{{conversation.partner.first_name}} {{conversation.partner.last_name}} </router-link>
-    <img :src="conversation.partner_image">
+    <img v-if="conversation.partner_image" :src="conversation.partner_image"/>
+    <img v-if="!conversation.partner_image" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/>
     <div v-for="message in messages">
       <strong>{{message.name}}:</strong>
         {{message.text}} at
@@ -55,7 +56,7 @@ export default {
       received: data => {
         // Called when there's incoming data on the websocket for this channel
         console.log("Data from MessagesChannel:", data);
-        this.messages.unshift(data); // update the messages in real time
+        this.messages.push(data); // update the messages in real time
       }
     });
   },
