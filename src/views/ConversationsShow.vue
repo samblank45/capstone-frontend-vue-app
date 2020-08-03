@@ -4,8 +4,8 @@
     <img :src="conversation.partner_image">
     <div v-for="message in messages">
       <strong>{{message.name}}:</strong>
-        {{message.text}} ...
-        {{relativeTime(message.created_at)}}
+        {{message.text}} at
+         {{relativeTime(message.created_at)}}
     </div>
     <form v-on:submit.prevent="createMessage()">
       <label>Send Message: </label>
@@ -24,6 +24,7 @@ img {
 <script>
 import axios from "axios";
 import moment from "moment";
+import ActionCable from "actioncable";
 
 export default {
   data: function() {
@@ -31,7 +32,7 @@ export default {
       errors: [],
       conversation: {},
       partner: {},
-      messages: {},
+      messages: [],
       newMessage: ""
     };
   },
@@ -41,6 +42,21 @@ export default {
       this.conversation = response.data;
       this.partner = response.data.partner;
       this.messages = response.data.messages;
+    });
+    var cable = ActionCable.createConsumer("ws://localhost:3000/cable");
+    cable.subscriptions.create("MessagesChannel", {
+      connected: () => {
+        // Called when the subscription is ready for use on the server
+        console.log("Connected to MessagesChannel");
+      },
+      disconnected: () => {
+        // Called when the subscription has been terminated by the server
+      },
+      received: data => {
+        // Called when there's incoming data on the websocket for this channel
+        console.log("Data from MessagesChannel:", data);
+        this.messages.unshift(data); // update the messages in real time
+      }
     });
   },
   methods: {

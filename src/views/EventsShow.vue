@@ -9,9 +9,20 @@
     <p>{{event.location}}</p>
     <p>{{relativeDate(event.date_time)}}</p>
     <p>attendees</p>
-    <div v-for="attendee in event.attendees">
-      <p>{{attendee.full_name}}</p>
-    </div>
+
+     <button v-on:click="showAttendees()">Attendees: {{event.attendees.length}}</button>
+
+      <dialog id="attendees-info">
+        <form method="dialog">
+          <p>Attendees</p>
+          <div v-for="attendee in event.attendees">
+            <router-link :to="`/users/${attendee.user_id}`">{{attendee.full_name}}</router-link>
+            <img :src="attendee.image">
+          </div>
+          <button>close</button>
+        </form>
+      </dialog>
+
     <div v-if="!event.attending && (event.host.id != $parent.getUserId())">
       <button v-on:click="attendEvent(event)">Attend</button>
     </div>
@@ -19,6 +30,7 @@
       <button v-on:click="removeAttendEvent(event)">Remove</button>
     </div>
     <p>host: {{event.host}}</p>
+      <router-link :to="`/users/${event.host_id}`"> {{event.host}} </router-link>
     <img :src="event.host_picture">
     <h1>MAP</h1>
     <p>{{event.address}}</p>
@@ -26,9 +38,10 @@
   </div>
 </template>
 
+
 <style scoped>
 img {
-  width: 400px;
+  width: 200px;
 }
 #map {
   top: 0;
@@ -107,6 +120,9 @@ export default {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
         });
+    },
+    showAttendees: function() {
+      document.querySelector("#attendees-info").showModal();
     },
     removeAttendEvent: function(event) {
       axios

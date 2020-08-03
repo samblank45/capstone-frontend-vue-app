@@ -17,7 +17,9 @@
       </div>
       <div class="form-group">
         <label>time:</label>
-        <input type="datetime-local" class="form-control" v-model="event.date_time">
+        <input type="datetime-local" id="event-time" 
+          min="2020-01-01T00:00" max="2021-12-31T11:59"
+          class="form-control" v-model="event.date_time">
       </div>
       <div class="form-group">
         <label>image:</label>

@@ -2,6 +2,7 @@
   <div class="users-show">
     <img v-if="user.images[0]" :src="user.images[0].url" /> 
     <img v-if="!user.images[0]" src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"/> 
+    
     <button v-on:click="showImages()">Images</button>
     <div v-if="$parent.getUserId() == user.id">
       <form v-on:submit.prevent="submit()">
@@ -37,7 +38,7 @@
     </div>
     <div v-for="error in errors"> {{error}} </div>
 
-    <div v-if="user.paired && (user.id != $parent.getUserId())">
+    <div v-if="!user.paired && (user.id != $parent.getUserId())">
       <button v-on:click="createConversation(user)">Send Message</button>
     </div>
     <div v-if="!user.paired && (user.id != $parent.getUserId())">

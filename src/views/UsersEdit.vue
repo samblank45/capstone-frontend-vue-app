@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <label> current city:</label>
-        <input type="body" class="form-control" v-model="user.current_city">
+        <input type="body" class="form-control" v-model="user.current_location">
       </div>
       <div class="form-group">
         <label>country origin:</label>
@@ -34,6 +34,14 @@
       <div class="form-group">
         <label>email:</label>
         <input type="body" class="form-control" v-model="user.email">
+      </div>
+      <div class="form-group">
+        <label>password:</label>
+        <input type="body" class="form-control" v-model="user.password">
+      </div>
+      <div class="form-group">
+        <label>password confirmation:</label>
+        <input type="body" class="form-control" v-model="user.passwordConfirmation">
       </div>
       <input type="submit" class="btn btn-primary" value="update">
     </form>
@@ -63,12 +71,14 @@ export default {
       var params = {
         first_name: this.user.first_name,
         last_name: this.user.last_name,
-        current_city: this.user.current_city,
+        current_location: this.user.current_location,
         country_origin: this.user.country_origin,
         biography: this.user.biography,
         hobbies: this.user.hobbies,
         aliyah_date: this.user.aliyah_date,
-        email: this.user.email
+        email: this.user.email,
+        password: this.user.password,
+        password_confirmation: this.user.passwordConfirmation
       };
       axios
         .patch(`/api/users/${this.user.id}`, params)

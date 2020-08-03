@@ -16,13 +16,13 @@
       <p>{{relativeDate(event.date_time)}}</p>
 
       <button v-on:click="showAttendees()">Attendees: {{event.attendees.length}}</button>
-      <p>{{event.attendees[0].full_name}}</p>
 
       <dialog id="attendees-info">
         <form method="dialog">
           <p>Attendees</p>
           <div v-for="attendee in event.attendees">
             <router-link :to="`/users/${attendee.user_id}`">{{attendee.full_name}}</router-link>
+            <img :src="attendee.image">
           </div>
           <button>close</button>
         </form>
