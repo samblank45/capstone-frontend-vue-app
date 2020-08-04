@@ -1,52 +1,136 @@
 <template>
   <div class="events-show">
+    <div class="kotha-default-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8">
+            <article class="single-blog">
+              <div class="post-thumb">
+                <img :src="event.image_url" />
+              </div>
+              <div class="post-content">
+                <div class="entry-header text-center text-uppercase">
+                  <p class="post-cat">
+                    {{ event.location }}
+                    {{ relativeDate(event.date_time) }}
+                  </p>
+                  <h2>
+                    {{ event.title }}
+                  </h2>
+                </div>
+                <div class="entry-content">
+                  <p>{{ event.description }}</p>
+                </div>
+                <div class="continue-reading text-left text-uppercase">
+                  <button v-on:click="showAttendees()">
+                    Attendees
+                  </button>
+                  {{ event.attendees.length }}
+                </div>
+                <div class="continue-reading text-left text-uppercase">
+                  <div
+                    v-if="
+                      !event.attending && event.host.id != $parent.getUserId()
+                    "
+                  >
+                    <button v-on:click="attendEvent(event)">Attend</button>
+                  </div>
+                  <div
+                    v-if="
+                      event.attending && event.host.id != $parent.getUserId()
+                    "
+                  >
+                    <button v-on:click="removeAttendEvent(event)">
+                      cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="col-sm-4">
+            <div class="kotha-sidebar">
+              <aside class="widget about-me-widget  text-center">
+                <div class="about-me-content">
+                  <div class="about-me-img">
+                    <img :src="event.host_picture" />
+                    <h2 class="text-uppercase">Host</h2>
+                    <h4 class="text-uppercase">
+                      <router-link :to="`/users/${event.host_id}`">
+                        {{ event.host }}
+                      </router-link>
+                    </h4>
+                    <p>
+                      {{ event.host_bio }}
+                    </p>
+                  </div>
+                </div>
+              </aside>
+              <aside class="widget widget-popular-post">
+                <h3 class="widget-title text-uppercase text-center">
+                  Location
+                </h3>
+                <ul>
+                  <li>
+                    <div id="map"></div>
+                  </li>
+                </ul>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="$parent.getUserId() == event.host_id">
       <router-link v-bind:to="`/events/${event.id}/edit`">Edit</router-link>
     </div>
-    <h3>{{event.title}}</h3>
-    <img :src="event.image_url">
-    <p>{{event.description}}</p>
-    <p>{{event.location}}</p>
-    <p>{{relativeDate(event.date_time)}}</p>
+    <h3>{{ event.title }}</h3>
+    <img :src="event.image_url" />
+    <p>{{ event.description }}</p>
+    <p>{{ event.location }}</p>
+    <p>{{ relativeDate(event.date_time) }}</p>
     <p>attendees</p>
 
-     <button v-on:click="showAttendees()">Attendees: {{event.attendees.length}}</button>
+    <button v-on:click="showAttendees()">
+      Attendees: {{ event.attendees.length }}
+    </button>
 
-      <dialog id="attendees-info">
-        <form method="dialog">
-          <p>Attendees</p>
-          <div v-for="attendee in event.attendees">
-            <router-link :to="`/users/${attendee.user_id}`">{{attendee.full_name}}</router-link>
-            <img :src="attendee.image">
-          </div>
-          <button>close</button>
-        </form>
-      </dialog>
+    <dialog id="attendees-info">
+      <form method="dialog">
+        <p>Attendees</p>
+        <div v-for="attendee in event.attendees">
+          <router-link :to="`/users/${attendee.user_id}`">{{
+            attendee.full_name
+          }}</router-link>
+          <img :src="attendee.image" />
+        </div>
+        <button>close</button>
+      </form>
+    </dialog>
 
-    <div v-if="!event.attending && (event.host.id != $parent.getUserId())">
+    <div v-if="!event.attending && event.host.id != $parent.getUserId()">
       <button v-on:click="attendEvent(event)">Attend</button>
     </div>
-    <div v-if="event.attending && (event.host.id != $parent.getUserId())">
+    <div v-if="event.attending && event.host.id != $parent.getUserId()">
       <button v-on:click="removeAttendEvent(event)">Remove</button>
     </div>
-    <p>host: {{event.host}}</p>
-      <router-link :to="`/users/${event.host_id}`"> {{event.host}} </router-link>
-    <img :src="event.host_picture">
+    <p>host: {{ event.host }}</p>
+    <router-link :to="`/users/${event.host_id}`">
+      {{ event.host }}
+    </router-link>
+    <img :src="event.host_picture" />
     <h1>MAP</h1>
-    <p>{{event.address}}</p>
-    <div id='map'></div>
+    <p>{{ event.address }}</p>
+    <div id="map"></div>
   </div>
 </template>
 
-
 <style scoped>
-img {
-  width: 200px;
-}
 #map {
   top: 0;
   bottom: 0;
-  height: 400px;
+  height: 200px;
   width: 100%;
 }
 </style>
@@ -61,11 +145,11 @@ export default {
   data: function() {
     return {
       event: {},
-      attendee: {}
+      attendee: {},
     };
   },
   created: function() {
-    axios.get(`/api/events/${this.$route.params.id}`).then(response => {
+    axios.get(`/api/events/${this.$route.params.id}`).then((response) => {
       this.event = response.data;
       console.log(response.data);
       mapboxgl.accessToken =
@@ -75,7 +159,7 @@ export default {
         .forwardGeocode({
           query: this.event.address,
           autocomplete: false,
-          limit: 1
+          limit: 1,
         })
         .send()
         .then(function(response) {
@@ -91,7 +175,7 @@ export default {
               container: "map",
               style: "mapbox://styles/mapbox/streets-v11",
               center: feature.center,
-              zoom: 10
+              zoom: 10,
             });
             new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
           }
@@ -105,18 +189,18 @@ export default {
     attendEvent: function(event) {
       var params = {
         user_id: localStorage.getItem("user_id"),
-        event_id: event.id
+        event_id: event.id,
       };
       axios
         .post(`/api/user_events`, params)
-        .then(response => {
+        .then((response) => {
           // this.$router.push(`/events/${this.$route.params.id}`);
           console.log("user successfully attending event", response.data);
           this.event.attending = true;
           this.event.attendees.push(response.data.attendee);
           console.log(event);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
         });
@@ -127,21 +211,21 @@ export default {
     removeAttendEvent: function(event) {
       axios
         .delete(`/api/user_events/${event.id}`)
-        .then(response => {
+        .then((response) => {
           console.log("user removed", response.data);
           this.event.attending = false;
           var index = this.event.attendees.findIndex(
-            user => user.user_id == this.$parent.getUserId()
+            (user) => user.user_id == this.$parent.getUserId()
           );
           this.event.attendees.splice(index, 1);
 
           console.log(event);
           console.log(index);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response.data.errors);
         });
-    }
-  }
+    },
+  },
 };
 </script>
