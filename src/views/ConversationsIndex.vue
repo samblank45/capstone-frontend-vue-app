@@ -1,26 +1,63 @@
 <template>
   <div class="conversations-index">
-    <h1>Messages</h1>
-    <div v-for="conversation in conversations">
-      <img :src="conversation.partner_image">
-      <p>{{conversation.partner.first_name}} {{conversation.partner.last_name}}</p>
-      <div v-if="conversation.text && conversation.created_at">
-        <router-link v-bind:to="`/conversations/${conversation.id}`">{{conversation.last_message.text}}</router-link>
-        <p>{{relativeTime(conversation.last_message.created_at)}}</p>
-      </div>
-      <div v-else>
-        <router-link v-bind:to="`/conversations/${conversation.id}`">message</router-link>
+    <div class="kotha-default-content">
+      <div class="container">
+        <h1 class="text-center">Messages</h1>
+        <div class="row">
+          <div class="col-sm-3">
+            <div v-for="conversation in conversations">
+              <div class="row">
+                <div class="col-md-4">
+                  <article class="single-blog post-list">
+                    <div class="media">
+                      <div class="media-left">
+                        <div class="post-thumb">
+                          <img :src="conversation.partner_image" />
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <div class="post-content">
+                          <div class="entry-header text-left text-uppercase">
+                            <h2>
+                              {{ conversation.partner.first_name }}
+                              {{ conversation.partner.last_name }}
+                            </h2>
+                          </div>
+                          <div class="entry-content">
+                            <div v-if="conversation.last_message">
+                              <router-link
+                                class="post-cat"
+                                v-bind:to="`/conversations/${conversation.id}`"
+                                ><p>
+                                  {{ conversation.last_message.text }}
+                                  {{
+                                    relativeTime(
+                                      conversation.last_message.created_at
+                                    )
+                                  }}
+                                </p>
+                              </router-link>
+                            </div>
+                            <div v-else>
+                              <router-link
+                                v-bind:to="`/conversations/${conversation.id}`"
+                                >send message</router-link
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
-
-<style>
-img {
-  width: 200px;
-}
-</style>
 
 <script>
 import axios from "axios";
@@ -28,11 +65,11 @@ import moment from "moment";
 export default {
   data: function() {
     return {
-      conversations: []
+      conversations: [],
     };
   },
   created: function() {
-    axios.get("/api/conversations").then(response => {
+    axios.get("/api/conversations").then((response) => {
       console.log("all conversations", response.data);
       this.conversations = response.data;
     });
@@ -42,7 +79,7 @@ export default {
       return moment(time)
         .startOf("hour")
         .fromNow();
-    }
-  }
+    },
+  },
 };
 </script>

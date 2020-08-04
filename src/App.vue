@@ -55,13 +55,13 @@
                   <router-link to="/">Login</router-link>
                 </li>
                 <li v-if="isLoggedIn()">
-                  <router-link to="/logout">Logout</router-link>
-                </li>
-                <li v-if="isLoggedIn()">
                   <router-link to="/users">People</router-link>
                 </li>
                 <li v-if="isLoggedIn()">
                   <router-link to="/conversations">Messages</router-link>
+                </li>
+                <li v-if="isLoggedIn()">
+                  <router-link to="/logout">Logout</router-link>
                 </li>
               </ul>
             </div>

@@ -22,7 +22,7 @@
               v-bind:key="event.id"
             >
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-11">
                   <article class="single-blog post-list">
                     <div class="media">
                       <div class="media-left">
@@ -73,7 +73,11 @@
                     <router-link :to="`/users/${attendee.user_id}`">{{
                       attendee.full_name
                     }}</router-link>
-                    <img :src="attendee.image" />
+                    <img v-if="attendee.image" :src="attendee.image" />
+                    <img
+                      v-else
+                      src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                    />
                   </div>
                   <button>close</button>
                 </form>

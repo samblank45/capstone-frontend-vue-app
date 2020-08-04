@@ -28,41 +28,115 @@
                 <div class="entry-content">
                   <p>{{ event.description }}</p>
                 </div>
-                <div class="continue-reading text-left text-uppercase">
-                  <button v-on:click="showAttendees()">
-                    Attendees
-                  </button>
-                  {{ event.attendees.length }}
+
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#showAttendeesModal"
+                >
+                  Attendees {{ event.attendees.length }}
+                </button>
+
+                <div
+                  class="modal fade"
+                  id="showAttendeesModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="showAttendeesModalLabel"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="showAttendeesModalLabel">
+                          Attendees
+                        </h5>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div
+                          class="col-md-4"
+                          v-for="attendee in event.attendees"
+                        >
+                          <router-link
+                            style="all: unset"
+                            :to="`/users/${attendee.user_id}`"
+                          >
+                            <div class="testimonial-area text-center">
+                              <div class="single-testimonial">
+                                <div class="testimonial-info">
+                                  <span class="testimonial-author">{{
+                                    attendee.full_name
+                                  }}</span>
+                                </div>
+                                <div class="testimonial-author-image">
+                                  <img
+                                    v-if="attendee.image"
+                                    :src="attendee.image"
+                                    alt=""
+                                    class="img-circle"
+                                  />
+                                  <img
+                                    v-else
+                                    src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                                    alt=""
+                                    class="img-circle"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </router-link>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div class="continue-reading text-left text-uppercase">
                   <div
                     v-if="
                       !event.attending && event.host.id != $parent.getUserId()
                     "
                   >
-                    <button v-on:click="attendEvent(event)">Attend</button>
+                    <button
+                      class="btn btn-success"
+                      v-on:click="attendEvent(event)"
+                    >
+                      Attend
+                    </button>
                   </div>
                   <div
                     v-if="
                       event.attending && event.host.id != $parent.getUserId()
                     "
                   >
-                    <button v-on:click="removeAttendEvent(event)">
+                    <button
+                      class="btn btn-danger"
+                      v-on:click="removeAttendEvent(event)"
+                    >
                       cancel
                     </button>
                   </div>
-                  <dialog id="attendees-info">
-                    <form method="dialog">
-                      <p>Attendees</p>
-                      <div v-for="attendee in event.attendees">
-                        <router-link :to="`/users/${attendee.user_id}`">{{
-                          attendee.full_name
-                        }}</router-link>
-                        <img :src="attendee.image" />
-                      </div>
-                      <button>close</button>
-                    </form>
-                  </dialog>
                 </div>
               </div>
             </article>
@@ -183,7 +257,7 @@ export default {
         });
     },
     showAttendees: function() {
-      document.querySelector("#attendees-info").showModal();
+      $("#showAttendeesModal").modal("hide");
     },
     removeAttendEvent: function(event) {
       axios
