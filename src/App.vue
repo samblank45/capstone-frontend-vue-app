@@ -17,6 +17,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              <p class="navbar-brand text-uppercase">
+                Sharsheret
+              </p>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="top-social-icons list-inline pull-right">
@@ -49,7 +52,7 @@
                   <router-link to="/signup">Signup</router-link>
                 </li>
                 <li v-if="!isLoggedIn()">
-                  <router-link to="/">Login</router-link> |
+                  <router-link to="/">Login</router-link>
                 </li>
                 <li v-if="isLoggedIn()">
                   <router-link to="/logout">Logout</router-link>

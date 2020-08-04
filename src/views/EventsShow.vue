@@ -18,6 +18,13 @@
                     {{ event.title }}
                   </h2>
                 </div>
+                <div class="continue-reading text-right text-uppercase">
+                  <div v-if="$parent.getUserId() == event.host_id">
+                    <router-link v-bind:to="`/events/${event.id}/edit`"
+                      >Edit</router-link
+                    >
+                  </div>
+                </div>
                 <div class="entry-content">
                   <p>{{ event.description }}</p>
                 </div>
@@ -44,6 +51,18 @@
                       cancel
                     </button>
                   </div>
+                  <dialog id="attendees-info">
+                    <form method="dialog">
+                      <p>Attendees</p>
+                      <div v-for="attendee in event.attendees">
+                        <router-link :to="`/users/${attendee.user_id}`">{{
+                          attendee.full_name
+                        }}</router-link>
+                        <img :src="attendee.image" />
+                      </div>
+                      <button>close</button>
+                    </form>
+                  </dialog>
                 </div>
               </div>
             </article>
@@ -81,48 +100,6 @@
         </div>
       </div>
     </div>
-
-    <div v-if="$parent.getUserId() == event.host_id">
-      <router-link v-bind:to="`/events/${event.id}/edit`">Edit</router-link>
-    </div>
-    <h3>{{ event.title }}</h3>
-    <img :src="event.image_url" />
-    <p>{{ event.description }}</p>
-    <p>{{ event.location }}</p>
-    <p>{{ relativeDate(event.date_time) }}</p>
-    <p>attendees</p>
-
-    <button v-on:click="showAttendees()">
-      Attendees: {{ event.attendees.length }}
-    </button>
-
-    <dialog id="attendees-info">
-      <form method="dialog">
-        <p>Attendees</p>
-        <div v-for="attendee in event.attendees">
-          <router-link :to="`/users/${attendee.user_id}`">{{
-            attendee.full_name
-          }}</router-link>
-          <img :src="attendee.image" />
-        </div>
-        <button>close</button>
-      </form>
-    </dialog>
-
-    <div v-if="!event.attending && event.host.id != $parent.getUserId()">
-      <button v-on:click="attendEvent(event)">Attend</button>
-    </div>
-    <div v-if="event.attending && event.host.id != $parent.getUserId()">
-      <button v-on:click="removeAttendEvent(event)">Remove</button>
-    </div>
-    <p>host: {{ event.host }}</p>
-    <router-link :to="`/users/${event.host_id}`">
-      {{ event.host }}
-    </router-link>
-    <img :src="event.host_picture" />
-    <h1>MAP</h1>
-    <p>{{ event.address }}</p>
-    <div id="map"></div>
   </div>
 </template>
 
