@@ -19,7 +19,9 @@
           </div>
           <div class="row">
             <div class="text-left">
-              <h1>{{ partner.first_name }} {{ partner.last_name }}</h1>
+              <router-link :to="`/users/${partner.id}`">
+                <h1>{{ partner.first_name }} {{ partner.last_name }}</h1>
+              </router-link>
             </div>
           </div>
           <div class="tab">

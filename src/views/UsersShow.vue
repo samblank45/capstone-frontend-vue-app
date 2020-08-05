@@ -27,18 +27,86 @@
                 </div>
                 <div class="continue-reading text-right text-uppercase">
                   <div v-if="$parent.getUserId() == user.id">
-                    <router-link :to="`/users/${user.id}/edit`"
-                      >Edit
-                    </router-link>
+                    <button class="btn btn-warning">
+                      <router-link :to="`/users/${user.id}/edit`"
+                        >Edit
+                      </router-link>
+                    </button>
                   </div>
                 </div>
-                <button class="btn btn-primary" v-on:click="showImages()">
-                  Images
-                </button>
-
+                <!-- modal button -->
+                <div class="continue-reading text-left text-uppercase">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#showImagesModal"
+                  >
+                    Images
+                  </button>
+                </div>
+                <br />
+                <!-- modal -->
+                <div
+                  class="modal fade"
+                  id="showImagesModal"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="showImagesModalLabel"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="showImagesModalLabel">
+                          Images
+                        </h5>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" v-for="image in user.images">
+                        <div class="testimonial-area text-center">
+                          <div class="single-testimonial">
+                            <div class="testimonial-info">
+                              <span class="testimonial-author-image">
+                                <img :src="image.url" />
+                                <div v-if="$parent.getUserId() == user.id">
+                                  <button
+                                    class="btn btn-danger btn-sm"
+                                    v-on:click="destroyImage(image)"
+                                  >
+                                    X
+                                  </button>
+                                </div>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- cloudinary image upload -->
                 <div v-if="$parent.getUserId() == user.id">
                   <form v-on:submit.prevent="submit()">
-                    Image:
                     <input
                       type="file"
                       v-on:change="setFile($event)"
@@ -51,37 +119,24 @@
                     />
                   </form>
                 </div>
-
-                <dialog id="images-details">
-                  <form method="dialog">
-                    <p>Pictures</p>
-                    <div v-for="image in user.images">
-                      <img :src="image.url" />
-                      <div v-if="$parent.getUserId() == user.id">
-                        <button
-                          class="btn btn-danger btn-sm"
-                          v-on:click="destroyImage(image)"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                    <button>close</button>
-                  </form>
-                </dialog>
-
+                <!-- link to conversation -->
                 <div class="about-me-text">
                   <p>{{ user.biography }}</p>
                   <div v-if="!user.paired && user.id != $parent.getUserId()">
-                    <button v-on:click="createConversation(user)">
+                    <button
+                      class="btn btn-default"
+                      v-on:click="createConversation(user)"
+                    >
                       Send Message
                     </button>
                   </div>
 
                   <div v-if="user.paired && user.id != $parent.getUserId()">
-                    <router-link :to="`/conversations/${user.paired}`"
-                      >current conversation</router-link
-                    >
+                    <button class="btn btn-default">
+                      <router-link :to="`/conversations/${user.paired}`"
+                        >current conversation</router-link
+                      >
+                    </button>
                   </div>
                 </div>
               </div>
@@ -97,9 +152,9 @@
                       ><img src="assets/images/p-1.jpg" alt="" />
                     </a>
                     <div class="p-content">
-                      <h3>hobbies</h3>
+                      <h3>Country of Origin</h3>
                       <br />
-                      <p>{{ user.hobbies }}</p>
+                      <p>{{ user.country_origin }}</p>
                     </div>
                   </li>
                   <li>
@@ -117,9 +172,9 @@
                       ><img src="assets/images/p-3.jpg" alt="" />
                     </a>
                     <div class="p-content">
-                      <h3>Country of Origin</h3>
+                      <h3>Hobbies</h3>
                       <br />
-                      <p>{{ user.country_origin }}</p>
+                      <p>{{ user.hobbies }}</p>
                     </div>
                   </li>
                 </ul>
