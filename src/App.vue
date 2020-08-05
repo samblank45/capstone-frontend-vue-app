@@ -49,9 +49,6 @@
                   <router-link to="/events">Events</router-link>
                 </li>
                 <li v-if="!isLoggedIn()">
-                  <router-link to="/signup">Signup</router-link>
-                </li>
-                <li v-if="!isLoggedIn()">
                   <router-link to="/">Login</router-link>
                 </li>
                 <li v-if="isLoggedIn()">

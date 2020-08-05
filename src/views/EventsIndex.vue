@@ -27,7 +27,7 @@
                     <div class="media">
                       <div class="media-left">
                         <div class="post-thumb">
-                          <img width="500px" :src="event.image_url" />
+                          <img width="" :src="event.image_url" />
                         </div>
                       </div>
                       <div class="media-body">
