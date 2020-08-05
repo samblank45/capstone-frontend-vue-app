@@ -13,10 +13,11 @@
               <div class="about-me">
                 <div class="about-img text-center">
                   <img
+                    width="500px"
                     v-if="user.images[0]"
                     :src="user.images[0].url"
                     alt
-                    class="img-circle"
+                    class=""
                   />
                   <img
                     v-if="!user.images[0]"
@@ -35,7 +36,7 @@
                   </div>
                 </div>
                 <!-- modal button -->
-                <div class="continue-reading text-left text-uppercase">
+                <div style="margin-top: 20px" class="text-left">
                   <button
                     type="button"
                     class="btn btn-primary"
@@ -78,7 +79,7 @@
                           <div class="single-testimonial">
                             <div class="testimonial-info">
                               <span class="testimonial-author-image">
-                                <img :src="image.url" />
+                                <img width="300px" :src="image.url" />
                                 <div v-if="$parent.getUserId() == user.id">
                                   <button
                                     class="btn btn-danger btn-sm"

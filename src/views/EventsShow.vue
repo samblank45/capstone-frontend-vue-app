@@ -28,7 +28,7 @@
                 <div class="entry-content">
                   <p>{{ event.description }}</p>
                 </div>
-
+                <!-- Modal Button -->
                 <button
                   type="button"
                   class="btn btn-primary"
@@ -37,7 +37,7 @@
                 >
                   Attendees {{ event.attendees.length }}
                 </button>
-
+                <!-- Modal -->
                 <div
                   class="modal fade"
                   id="showAttendeesModal"
@@ -76,17 +76,18 @@
                             <div class="single-testimonial">
                               <div class="testimonial-info">
                                 <span class="testimonial-author-image"
-                                  ><p class="text-left">
+                                  ><p class="text-center">
                                     {{ attendee.full_name }}
                                   </p></span
                                 >
                               </div>
                               <div class="testimonial-author-image">
                                 <img
+                                  width="200px"
                                   v-if="attendee.image"
                                   :src="attendee.image"
                                   alt=""
-                                  class="img-circle"
+                                  class=""
                                 />
                                 <img
                                   v-else

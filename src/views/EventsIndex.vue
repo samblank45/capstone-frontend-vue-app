@@ -27,7 +27,7 @@
                     <div class="media">
                       <div class="media-left">
                         <div class="post-thumb">
-                          <img :src="event.image_url" />
+                          <img width="500px" :src="event.image_url" />
                         </div>
                       </div>
                       <div class="media-body">
@@ -43,16 +43,17 @@
                               }}</router-link>
                             </h2>
                           </div>
-                          <div class="entry-content">
-                            <p>{{ event.description }}</p>
-                            <button
-                              class="current"
-                              v-on:click="showAttendees()"
-                            >
-                              Attendees
-                            </button>
-                            {{ event.attendees.length }}
-                          </div>
+                          <!-- Modal button -->
+                          <button
+                            v-on:click="currentEvent = event"
+                            type="button"
+                            class="btn btn-primary"
+                            data-toggle="modal"
+                            data-target="#showAttendeesModal"
+                          >
+                            Attendees {{ event.attendees.length }}
+                          </button>
+
                           <div class="post-meta">
                             <ul class="list-inline author-meta">
                               <li class="author">
@@ -66,22 +67,77 @@
                   </article>
                 </div>
               </div>
-              <dialog id="attendees-info">
-                <form method="dialog">
-                  <p>Attendees</p>
-                  <div v-for="attendee in event.attendees">
-                    <router-link :to="`/users/${attendee.user_id}`">{{
-                      attendee.full_name
-                    }}</router-link>
-                    <img v-if="attendee.image" :src="attendee.image" />
-                    <img
-                      v-else
-                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                    />
+            </div>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="showAttendeesModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="showAttendeesModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="showAttendeesModalLabel">
+                      Attendees
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
                   </div>
-                  <button>close</button>
-                </form>
-              </dialog>
+                  <div class="modal-body">
+                    <div v-for="attendee in currentEvent.attendees">
+                      <router-link
+                        style="all: unset"
+                        :to="`/users/${attendee.user_id}`"
+                      >
+                        <div class="testimonial-area text-center">
+                          <div class="single-testimonial">
+                            <div class="testimonial-info">
+                              <span class="testimonial-author-image"
+                                ><p class="text-center">
+                                  {{ attendee.full_name }}
+                                </p></span
+                              >
+                            </div>
+                            <div class="testimonial-author-image">
+                              <img
+                                width="200px"
+                                v-if="attendee.image"
+                                :src="attendee.image"
+                                alt=""
+                                class="img-rounded"
+                              />
+                              <img
+                                v-else
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                alt=""
+                                class="img-circle"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </router-link>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-sm-4">
@@ -95,7 +151,7 @@
                     <div v-if="$parent.getUserId() == event.host_id">
                       <div class="single-instagram">
                         <router-link v-bind:to="`/events/${event.id}}`"
-                          ><img :src="event.image_url"
+                          ><img width="300px" :src="event.image_url"
                         /></router-link>
                       </div>
                     </div>
@@ -123,6 +179,7 @@ export default {
       events: {},
       attendee: {},
       titleFilter: "",
+      currentEvent: {},
     };
   },
   created: function() {
