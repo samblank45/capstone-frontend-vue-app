@@ -64,40 +64,40 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                      <div class="modal-body">
-                        <div
-                          class="col-md-4"
-                          v-for="attendee in event.attendees"
+                      <div
+                        class="modal-body"
+                        v-for="attendee in event.attendees"
+                      >
+                        <router-link
+                          style="all: unset"
+                          :to="`/users/${attendee.user_id}`"
                         >
-                          <router-link
-                            style="all: unset"
-                            :to="`/users/${attendee.user_id}`"
-                          >
-                            <div class="testimonial-area text-center">
-                              <div class="single-testimonial">
-                                <div class="testimonial-info">
-                                  <span class="testimonial-author">{{
-                                    attendee.full_name
-                                  }}</span>
-                                </div>
-                                <div class="testimonial-author-image">
-                                  <img
-                                    v-if="attendee.image"
-                                    :src="attendee.image"
-                                    alt=""
-                                    class="img-circle"
-                                  />
-                                  <img
-                                    v-else
-                                    src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
-                                    alt=""
-                                    class="img-circle"
-                                  />
-                                </div>
+                          <div class="testimonial-area text-center">
+                            <div class="single-testimonial">
+                              <div class="testimonial-info">
+                                <span class="testimonial-author-image"
+                                  ><p class="text-left">
+                                    {{ attendee.full_name }}
+                                  </p></span
+                                >
+                              </div>
+                              <div class="testimonial-author-image">
+                                <img
+                                  v-if="attendee.image"
+                                  :src="attendee.image"
+                                  alt=""
+                                  class="img-circle"
+                                />
+                                <img
+                                  v-else
+                                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                  alt=""
+                                  class="img-circle"
+                                />
                               </div>
                             </div>
-                          </router-link>
-                        </div>
+                          </div>
+                        </router-link>
                       </div>
                       <div class="modal-footer">
                         <button
@@ -255,9 +255,6 @@ export default {
           console.log(error.response.data.errors);
           this.errors = error.response.data.errors;
         });
-    },
-    showAttendees: function() {
-      $("#showAttendeesModal").modal("hide");
     },
     removeAttendEvent: function(event) {
       axios

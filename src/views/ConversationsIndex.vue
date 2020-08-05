@@ -4,15 +4,22 @@
       <div class="container">
         <h1 class="text-center">Messages</h1>
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-10">
             <div v-for="conversation in conversations">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <article class="single-blog post-list">
                     <div class="media">
                       <div class="media-left">
                         <div class="post-thumb">
-                          <img :src="conversation.partner_image" />
+                          <div v-if="conversation.partner_image">
+                            <img :src="conversation.partner_image" />
+                          </div>
+                          <div v-else>
+                            <img
+                              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                            />
+                          </div>
                         </div>
                       </div>
                       <div class="media-body">

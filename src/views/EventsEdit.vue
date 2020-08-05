@@ -1,45 +1,111 @@
 <template>
   <div class="events-edit">
-    <form v-on:submit.prevent="editEvent()">
-      <div class="form-group">
-        <label>Event title</label>
-        <input type="text" class="form-control" v-model="event.title" />
+    <div class="kotha-default-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8">
+            <article class="single-blog contact-us">
+              <div class="post-content">
+                <div class="entry-header text-center text-uppercase">
+                  <h2 class="text-left">Edit Event</h2>
+                </div>
+                <div class="leave-comment">
+                  <form v-on:submit.prevent="editEvent()">
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>
+                          Event title
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="event.title"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>description:</label>
+                        <textarea
+                          class="form-control"
+                          rows="6"
+                          v-model="event.location"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>location:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="event.location"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>
+                          time:
+                        </label>
+                        <input
+                          type="datetime-local"
+                          id="event-time"
+                          class="form-control"
+                          v-model="event.date_time"
+                        />
+                        {{ event.date_time }}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>image:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="event.image_url"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>address:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="event.address"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        value="update"
+                      >
+                        Update
+                      </button>
+                      <button
+                        class="btn btn-danger"
+                        v-on:click="destroyEvent()"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>description:</label>
-        <input type="text" class="form-control" v-model="event.description" />
-      </div>
-      <div class="form-group">
-        <label> location:</label>
-        <input type="text" class="form-control" v-model="event.location" />
-      </div>
-      <div class="form-group">
-        <label>time:</label>
-        <input
-          type="datetime-local"
-          id="event-time"
-          min="2020-01-01T00:00"
-          max="2021-12-31T11:59"
-          class="form-control"
-          v-model="event.date_time"
-        />
-      </div>
-      <div class="form-group">
-        <label>image:</label>
-        <input type="text" class="form-control" v-model="event.image_url" />
-      </div>
-      <div class="form-group">
-        <label>address:</label>
-        <input type="text" class="form-control" v-model="event.address" />
-      </div>
-      <input type="submit" class="btn btn-primary" value="update" />
-      <button v-on:click="destroyEvent()">Delete</button>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import moment from "moment";
 
 export default {
   data: function() {
@@ -60,7 +126,7 @@ export default {
         title: this.event.title,
         description: this.event.description,
         location: this.event.location,
-        date_time: this.event.date_time,
+        date_time: moment(this.event.date_time).format(),
         image_url: this.event.image_url,
         address: this.event.address,
       };

@@ -19,7 +19,7 @@
                       <img v-if="user.image[0]" :src="user.image[0].url"/>
                       <img
                         v-else
-                        src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                     /></router-link>
                   </div>
                   <div class="post-content">

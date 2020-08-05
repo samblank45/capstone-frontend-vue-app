@@ -3,10 +3,9 @@
     <div class="kotha-default-content">
       <div class="container">
         <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+        <p>Current Location</p>
         <p>{{ user.current_location }}</p>
-        <div v-if="$parent.getUserId() == user.id">
-          <router-link :to="`/users/${user.id}/edit`">Edit </router-link>
-        </div>
+
         <div v-for="error in errors">{{ error }}</div>
         <div class="row">
           <div class="col-sm-8">
@@ -21,15 +20,22 @@
                   />
                   <img
                     v-if="!user.images[0]"
-                    src="https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                     alt
                     class="img-circle"
                   />
                 </div>
-
+                <div class="continue-reading text-right text-uppercase">
+                  <div v-if="$parent.getUserId() == user.id">
+                    <router-link :to="`/users/${user.id}/edit`"
+                      >Edit
+                    </router-link>
+                  </div>
+                </div>
                 <button class="btn btn-primary" v-on:click="showImages()">
                   Images
                 </button>
+
                 <div v-if="$parent.getUserId() == user.id">
                   <form v-on:submit.prevent="submit()">
                     Image:
@@ -140,6 +146,7 @@ export default {
     };
   },
   created: function() {
+    $("#showAttendeesModal").modal("hide");
     axios.get(`/api/users/${this.$route.params.id}`).then((response) => {
       this.user = response.data;
       this.images = response.data.images;

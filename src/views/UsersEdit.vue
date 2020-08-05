@@ -1,54 +1,143 @@
-
 <template>
   <div class="users-edit">
-    <form v-on:submit.prevent="editUser()">
-  
-      <div class="form-group">
-        <label>first name:</label>
-        <input type="body" class="form-control" v-model="user.first_name">
+    <div class="kotha-default-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8">
+            <article class="single-blog contact-us">
+              <div class="post-content">
+                <div class="entry-header text-center text-uppercase">
+                  <h2 class="text-left">Edit Profile</h2>
+                </div>
+                <div class="leave-comment">
+                  <form v-on:submit.prevent="editUser()">
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>
+                          first name:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.first_name"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>last name:</label>
+                        <textarea
+                          class="form-control"
+                          rows="6"
+                          v-model="user.last_name"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>current city:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.current_location"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>
+                          country of origin:
+                        </label>
+                        <input
+                          type="datetime-local"
+                          id="event-time"
+                          class="form-control"
+                          v-model="user.country_origin"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>biography:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.biography"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>hobbies:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.hobbies"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>aliyah date:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.aliyah_date"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>email:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.email"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>password:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.password"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label>password confirmation:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="user.passwordConfirmation"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        value="update"
+                      >
+                        Update
+                      </button>
+                      <button class="btn btn-danger" v-on:click="destroyUser()">
+                        Delete
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>last name:</label>
-        <input type="body" class="form-control" v-model="user.last_name">
-      </div>
-      <div class="form-group">
-        <label> current city:</label>
-        <input type="body" class="form-control" v-model="user.current_location">
-      </div>
-      <div class="form-group">
-        <label>country origin:</label>
-        <input type="body" class="form-control" v-model="user.country_origin">
-      </div>
-      <div class="form-group">
-        <label>biography:</label>
-        <input type="body" class="form-control" v-model="user.biography">
-      </div>
-      <div class="form-group">
-        <label>hobbies:</label>
-        <input type="body" class="form-control" v-model="user.hobbies">
-      </div>
-      <div class="form-group">
-        <label>aliyah date:</label>
-        <input type="body" class="form-control" v-model="user.aliyah_date">
-      </div>
-      <div class="form-group">
-        <label>email:</label>
-        <input type="body" class="form-control" v-model="user.email">
-      </div>
-      <div class="form-group">
-        <label>password:</label>
-        <input type="body" class="form-control" v-model="user.password">
-      </div>
-      <div class="form-group">
-        <label>password confirmation:</label>
-        <input type="body" class="form-control" v-model="user.passwordConfirmation">
-      </div>
-      <input type="submit" class="btn btn-primary" value="update">
-    </form>
-    <button v-on:click="destroyUser()">Delete Profile</button>
+    </div>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -57,11 +146,11 @@ export default {
   data: function() {
     return {
       errors: [],
-      user: {}
+      user: {},
     };
   },
   created: function() {
-    axios.get(`/api/users/${this.$route.params.id}`).then(response => {
+    axios.get(`/api/users/${this.$route.params.id}`).then((response) => {
       this.user = response.data;
       console.log(this.user);
     });
@@ -78,25 +167,25 @@ export default {
         aliyah_date: this.user.aliyah_date,
         email: this.user.email,
         password: this.user.password,
-        password_confirmation: this.user.passwordConfirmation
+        password_confirmation: this.user.passwordConfirmation,
       };
       axios
         .patch(`/api/users/${this.user.id}`, params)
-        .then(response => {
+        .then((response) => {
           this.$router.push(`/users/${response.data.id}`);
         })
-        .catch(error => {
+        .catch((error) => {
           this.error = error.response.data.errors;
         });
     },
     destroyUser: function() {
       if (confirm("are you sure you want to delete your profile?")) {
-        axios.delete(`/api/users/${this.user.id}`).then(response => {
+        axios.delete(`/api/users/${this.user.id}`).then((response) => {
           console.log("successfully destroyed user", response.data);
           this.$router.push("/");
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

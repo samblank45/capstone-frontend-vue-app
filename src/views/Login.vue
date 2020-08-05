@@ -11,7 +11,7 @@
                 </h1>
                 <img
                   class="col-sm-12"
-                  src="https://media.cntraveler.com/photos/58dd71396c3567139f9b6cc1/master/pass/GettyImages-527167695.jpg"
+                  src="https://www.kinaxis.com/sites/default/files/blog/2016/10/iStock_82553549_MEDIUM-1024x711.jpg"
                 />
                 <h3 class="content">
                   Sign-in
@@ -36,7 +36,9 @@
                 <input type="submit" class="btn btn-primary" value="Submit" />
                 <div>
                   <p>not a member?</p>
-                  <router-link to="/signup">Signup</router-link>
+                  <p>
+                    <router-link id="signup" to="/signup">Signup</router-link>
+                  </p>
                 </div>
               </form>
             </div>
@@ -48,6 +50,11 @@
     </body>
   </div>
 </template>
+<style>
+#signup {
+  color: grey;
+}
+</style>
 
 <script>
 import axios from "axios";
