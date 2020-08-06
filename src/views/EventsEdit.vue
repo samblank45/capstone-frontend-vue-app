@@ -29,7 +29,7 @@
                         <textarea
                           class="form-control"
                           rows="6"
-                          v-model="event.location"
+                          v-model="event.description"
                         ></textarea>
                       </div>
                     </div>

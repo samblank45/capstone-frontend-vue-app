@@ -227,7 +227,7 @@ export default {
               container: "map",
               style: "mapbox://styles/mapbox/streets-v11",
               center: feature.center,
-              zoom: 12,
+              zoom: 13,
             });
             new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
           }

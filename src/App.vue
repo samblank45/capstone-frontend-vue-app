@@ -48,7 +48,7 @@
                 <li v-if="isLoggedIn()">
                   <router-link to="/events">Events</router-link>
                 </li>
-                <li v-if="!isLoggedIn()">
+                <li v-if="!isLoggedIn() && $route.name == `signup`">
                   <router-link to="/">Login</router-link>
                 </li>
                 <li v-if="isLoggedIn()">
@@ -85,6 +85,11 @@ export default {
     },
     getUserId: function() {
       return localStorage.getItem("user_id");
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
     },
   },
 };
