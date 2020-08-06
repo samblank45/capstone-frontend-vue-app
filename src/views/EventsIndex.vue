@@ -2,16 +2,23 @@
   <div class="events-index">
     <div class="kotha-default-content">
       <div class="col-sm-10">
-        <div class="entry-header text-center">
+        <div
+          class="entry-header text-center"
+          style="position:relative;  top:-30px;"
+        >
           <h1>Events</h1>
           <div>
             search:
             <input type="text" v-model="titleFilter" list="title" /> &emsp;
-            <router-link class="btn btn" to="/events/new">Create</router-link>
           </div>
           <datalist id="titles">
             <option v-for="event in events"> {{ event.title }} </option>
           </datalist>
+        </div>
+        <div style="position:relative; left: 125px; top:-30px;">
+          <button class="btn btn-default">
+            <router-link to="/events/new">Create</router-link>
+          </button>
         </div>
       </div>
       <div class="container">
@@ -22,12 +29,12 @@
               v-bind:key="event.id"
             >
               <div class="row">
-                <div class="col-md-11">
+                <div class="col-md-10">
                   <article class="single-blog post-list">
                     <div class="media">
                       <div class="media-left">
                         <div class="post-thumb">
-                          <img width="" :src="event.image_url" />
+                          <img :src="event.image_url" />
                         </div>
                       </div>
                       <div class="media-body">

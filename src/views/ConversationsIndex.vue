@@ -33,17 +33,28 @@
                         {{ conversation.partner.last_name }}
                       </h3>
                     </div>
-
-                    <p class="comment-date">
-                      {{ relativeTime(conversation.last_message.created_at) }}
-                    </p>
-                    <p class="comment-p">
+                    <div v-if="conversation.last_message">
+                      <p class="comment-date">
+                        {{ relativeTime(conversation.last_message.created_at) }}
+                      </p>
+                    </div>
+                    <div v-else></div>
+                    <div v-if="conversation.last_message">
+                      <p class="comment-p">
+                        <router-link
+                          v-bind:to="`/conversations/${conversation.id}`"
+                        >
+                          {{ conversation.last_message.text }}
+                        </router-link>
+                      </p>
+                    </div>
+                    <div v-else>
                       <router-link
                         v-bind:to="`/conversations/${conversation.id}`"
                       >
-                        {{ conversation.last_message.text }}
+                        message
                       </router-link>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>

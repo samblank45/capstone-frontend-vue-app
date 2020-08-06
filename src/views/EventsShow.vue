@@ -1,9 +1,9 @@
 <template>
   <div class="events-show">
     <div class="kotha-default-content">
-      <div class="container">
+      <div class="container" style="position:relative; left: 100px; top: 50px;">
         <div class="row">
-          <div class="col-sm-8">
+          <div class="col-sm-6">
             <article class="single-blog">
               <div class="post-thumb">
                 <img :src="event.image_url" />
@@ -18,7 +18,7 @@
                     {{ event.title }}
                   </h2>
                 </div>
-                <div class="continue-reading text-right text-uppercase">
+                <div class="continue-reading text-center text-uppercase">
                   <div v-if="$parent.getUserId() == event.host_id">
                     <router-link v-bind:to="`/events/${event.id}/edit`"
                       >Edit</router-link

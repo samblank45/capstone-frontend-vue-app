@@ -26,17 +26,11 @@
                     class="img-circle"
                   />
                 </div>
-                <div class="continue-reading text-right text-uppercase">
-                  <div v-if="$parent.getUserId() == user.id">
-                    <button class="btn btn-warning">
-                      <router-link :to="`/users/${user.id}/edit`"
-                        >Edit
-                      </router-link>
-                    </button>
-                  </div>
-                </div>
                 <!-- modal button -->
-                <div style="margin-top: 20px" class="text-left">
+                <div
+                  style="position:relative; left: 5px; top: 30px;"
+                  class="text-left"
+                >
                   <button
                     type="button"
                     class="btn btn-primary"
@@ -78,8 +72,10 @@
                         <div class="testimonial-area text-center">
                           <div class="single-testimonial">
                             <div class="testimonial-info">
-                              <span class="testimonial-author-image">
-                                <img width="300px" :src="image.url" />
+                              <span
+                                class="testimonial-author-image text-center"
+                              >
+                                <img width="300 px" :src="image.url" />
                                 <div v-if="$parent.getUserId() == user.id">
                                   <button
                                     class="btn btn-danger btn-sm"
@@ -106,7 +102,11 @@
                   </div>
                 </div>
                 <!-- cloudinary image upload -->
-                <div v-if="$parent.getUserId() == user.id">
+                <!-- style="position:absolute; left: 430px; top:440px;" -->
+                <div
+                  style="position:relative; left: 500px; top:-45px;"
+                  v-if="$parent.getUserId() == user.id"
+                >
                   <form v-on:submit.prevent="submit()">
                     <input
                       type="file"
@@ -138,6 +138,18 @@
                         >current conversation</router-link
                       >
                     </button>
+                  </div>
+                  <div
+                    style="position:absolute; left: 900px; top:-100px;"
+                    class="continue-reading text-right text-uppercase"
+                  >
+                    <div v-if="$parent.getUserId() == user.id">
+                      <button class="btn btn-warning">
+                        <router-link :to="`/users/${user.id}/edit`"
+                          >Edit
+                        </router-link>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -235,7 +247,7 @@ export default {
         .post(`/api/conversations`, params)
         .then((response) => {
           console.log("convo created successfully", response.data);
-          this.$router.push("/conversations");
+          this.$router.push(`/conversations/`);
         })
         .catch((error) => {
           console.log(error.response.data.errors);

@@ -49,8 +49,7 @@
                           country of origin:
                         </label>
                         <input
-                          type="datetime-local"
-                          id="event-time"
+                          type="text"
                           class="form-control"
                           v-model="user.country_origin"
                         />
@@ -124,7 +123,11 @@
                       >
                         Update
                       </button>
-                      <button class="btn btn-danger" v-on:click="destroyUser()">
+                      <button
+                        style="position:relative; left: 500px; ;"
+                        class="btn btn-danger"
+                        v-on:click="destroyUser()"
+                      >
                         Delete
                       </button>
                     </div>

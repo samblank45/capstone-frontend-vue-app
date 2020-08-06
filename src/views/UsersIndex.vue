@@ -12,7 +12,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-sm-3" v-for="user in filterBy(users, nameFilter)">
+              <div class="col-sm-4" v-for="user in filterBy(users, nameFilter)">
                 <article class="portfolio portfolio-2 post-grid">
                   <div class="post-thumb">
                     <router-link v-bind:to="`/users/${user.id}`">
