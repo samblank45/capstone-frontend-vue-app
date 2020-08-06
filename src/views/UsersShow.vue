@@ -140,7 +140,7 @@
                     </button>
                   </div>
                   <div
-                    style="position:absolute; left: 900px; top:-100px;"
+                    style="position:absolute; left: 950px; top:-100px;"
                     class="continue-reading text-right text-uppercase"
                   >
                     <div v-if="$parent.getUserId() == user.id">

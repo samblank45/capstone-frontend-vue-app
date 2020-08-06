@@ -6,16 +6,20 @@
           <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
               <form v-on:submit.prevent="submit()">
-                <h1 class="text">
-                  Sharsheret
-                </h1>
+                <br />
+
                 <img
                   class="col-sm-12"
                   src="https://www.kinaxis.com/sites/default/files/blog/2016/10/iStock_82553549_MEDIUM-1024x711.jpg"
                 />
+
                 <h3 class="content">
                   Sign-in
                 </h3>
+                <br />
+                <br />
+                <br />
+                <br />
                 <ul>
                   <li class="text-danger" v-for="error in errors">
                     {{ error }}

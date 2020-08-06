@@ -8,7 +8,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <div class="container" style="position:relative; left: 200px;">
         <div class="row">
           <div class="col-sm-8">
             <article class="single-blog contact-us">
