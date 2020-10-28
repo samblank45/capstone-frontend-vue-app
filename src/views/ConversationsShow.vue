@@ -136,7 +136,7 @@ export default {
         this.partner = response.data.partner;
         this.messages = response.data.messages;
       });
-    var cable = ActionCable.createConsumer("ws://localhost:3000/cable");
+    var cable = ActionCable.createConsumer("ws://https://sharsheret.herokuapp.com//cable");
     cable.subscriptions.create("MessagesChannel", {
       connected: () => {
         // Called when the subscription is ready for use on the server
