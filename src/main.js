@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import axios from "axios"
 
-axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "https://jolly-lamport-aeb3fc.netlify.app" : "/";
+axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "https://sharsheret.herokuapp.com/" : "/";
 
 var jwt = localStorage.getItem("jwt");
 if (jwt) {
